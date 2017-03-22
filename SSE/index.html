@@ -1,0 +1,16 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>服务器推送技术 EventSource</title>
+</head>
+<body>
+<div id="result"></div>
+</body>
+</html>
+<script type="text/javascript">
+	var source=new EventSource("sse.php");
+source.onmessage=function(event)
+  {
+  document.getElementById("result").innerHTML+=event.data + "<br />";
+  };
+</script>

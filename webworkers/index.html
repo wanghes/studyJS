@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title></title>
+
+</head>
+<body onload = "init()">
+    <div id="result"></div>
+</body>
+<script>
+function init(){
+    //创建一个Worker对象，并向它传递将在新线程中执行的脚本url
+    var worker = new Worker('worker.js');
+    //接收worker传递过来的数据
+    var count = 0;
+    worker.onmessage = function(event){
+         if(typeof event.data == "string"){
+            document.getElementById('result').innerHTML+=event.data+"<br/>" ;
+        }else{
+            document.getElementById('result').innerHTML+=event.data.num+"<br/>" ;
+        }
+        count++;
+        if(count==4){
+             worker.terminate();
+        }
+
+    };
+
+    setInterval(function(){
+        worker.postMessage({name: 'monkey'});
+    },100);
+    worker.onerror = function(e){
+        //打印出错消息
+        console.log(e.message);
+        //中断与子线程的联系
+        worker.terminate();
+    }
+};
+</script>
+
+</html>

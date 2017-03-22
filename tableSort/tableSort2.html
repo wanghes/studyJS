@@ -1,0 +1,310 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title></title>
+    <script type="text/javascript" src="jquery-2.0.2.js"></script>
+</head>
+<style type="text/css">
+    table{
+        border-collapse:collapse;
+    }
+    .indexTableTr td{
+        border-bottom: none;
+    }
+    table.sorttableHold tr:first-child{
+        background: #888;
+    }
+    table.sorttableHold tr:first-child a{
+        text-decoration:none;
+        color:#fff;
+    }
+    table tr td{
+        padding: 10px;
+        border:1px solid #aaa;
+        text-align:left;
+    }
+</style>
+<body>
+    <div id="tableWrap">
+    <div>
+    <table width="100%"  class="sorttableHold" id="paixun">
+        <tbody>
+            <tr class="indexTableTr">
+                 <td width="16%">程序名称</td>
+                 <td width="14%">当天访问量(次)</td>
+                 <td width="14%">平均响应时间(us)</td>
+                 <td width="14%">错误数(次)</td>
+                 <td width="14%">错误率(%)</td>
+                 <td width="14%">系统错误数(次)</td>
+                 <td width="14%">系统错误率(%)</td>
+            </tr>
+            <tr>
+                 <td width="16%"><a>推荐页1</a></td>
+                 <td width="14%">666</td>
+                 <td width="14%">29872</td>
+                 <td width="14%">180663</td>
+                 <td width="14%">2873%</td>
+                 <td width="14%">2%</td>
+                 <td width="14%">16%</td>
+            </tr>
+            <tr>
+                 <td><a>推荐页3</a></td>
+                 <td>956</td>
+                 <td>27957</td>
+                 <td>111</td>
+                 <td>10%</td>
+                 <td>1%</td>
+                 <td>18%</td>
+            </tr>
+            <tr>
+                 <td><a>推荐页2</a></td>
+                 <td>593896</td>
+                 <td>24946</td>
+                 <td>222</td>
+                 <td>2%</td>
+                 <td>3%</td>
+                 <td>23%</td>
+            </tr>
+        </tbody>
+    </table>
+    </div>
+    </div>
+    <script type="text/javascript">
+    /**
+    * 使用要求:
+    * 1.将表格的Class命名为:sorttableHold,
+    * 2.表格放置在一个div中,此div设有overflow属性.
+    * 3.表格要求有ID,div要求有ID
+    * 4.要有JQuery.min.js文件
+    * 5.OK.
+    */
+
+
+    addEvent(window, "load", sortables_init);
+
+    var SORT_COLUMN_INDEX;
+
+    function sortables_init() {
+        // Find all tables with class sortable and make them sortable
+        if (!document.getElementsByTagName) return;
+        tbls = document.getElementsByTagName("table");
+        for (ti = 0; ti < tbls.length; ti++) {
+            thisTbl = tbls[ti];
+            if (((' ' + thisTbl.className + ' ').indexOf("sorttableHold") != -1) && (thisTbl.id)) {
+                //initTable(thisTbl.id);
+                ts_makeSortable(thisTbl);
+            }
+        }
+    }
+
+    function ts_makeSortable(table) {
+        if (table.rows && table.rows.length > 0) {
+            var firstRow = table.rows[0];
+        }
+        if (!firstRow) return;
+
+        // We have a first row: assume it's the header, and make its contents clickable links
+        for (var i = 0; i < firstRow.cells.length; i++) {
+            var cell = firstRow.cells[i];
+            var txt = ts_getInnerText(cell);
+            cell.innerHTML = '<a href="#" class="sortheader" ' +
+                'onclick="ts_resortTable(this, ' + i + ');return false;">' +
+                txt + '<span class="sortarrow">   </span></a>';
+        }
+        if (table != undefined) //分离
+        {
+            $('<div id="' + table.id + 'Title"></div>').insertBefore('#' + table.parentNode.parentNode.id); //创建DIV
+            var div_title = document.getElementById(table.id + 'Title');
+            var title = table.cloneNode(true) //all再复制给title
+            for (i = title.rows.length - 1; i > 0; i--) //把title中内容全部删除,只留第一行,也就是标题
+                title.deleteRow(i)
+            table.deleteRow(0) //GridView中第一行(标题)删除,也就只有内容了
+            div_title.appendChild(title) //标题给div
+            $("#" + div_title.id + " table:eq(0)").attr("id", div_title.id + "1");
+            $(table).removeAttr("class");
+        }
+
+    }
+
+    function ts_getInnerText(el) {
+        if (typeof el == "string") return el;
+        if (typeof el == "undefined") {
+            return el
+        };
+        if (el.innerText) return el.innerText; //Not needed but it is faster
+        var str = "";
+
+        var cs = el.childNodes;
+        var l = cs.length;
+        for (var i = 0; i < l; i++) {
+            switch (cs[i].nodeType) {
+                case 1: //ELEMENT_NODE
+                    str += ts_getInnerText(cs[i]);
+                    break;
+                case 3: //TEXT_NODE
+                    str += cs[i].nodeValue;
+                    break;
+            }
+        }
+        return str;
+    }
+
+    function ts_resortTable(lnk, clid) {
+        // get the span
+        var span;
+        for (var ci = 0; ci < lnk.childNodes.length; ci++) { //获取标题中的Span
+            if (lnk.childNodes[ci].tagName && lnk.childNodes[ci].tagName.toLowerCase() == 'span') span = lnk.childNodes[ci];
+        }
+        var spantext = ts_getInnerText(span); //标题Span内容
+        var td = lnk.parentNode; //单元格
+        var column = clid || td.cellIndex; //列
+        var tablecurrent = getParent(td, 'TABLE'); //表
+        var tableid = tablecurrent.id.substring(0, tablecurrent.id.length - 6);
+        var table = document.getElementById(tableid);
+        // Work out a type for the column
+        if (table.rows.length <= 1) return;
+        var itm = ts_getInnerText(table.rows[0].cells[column]);
+        sortfn = ts_sort_caseinsensitive;
+        if (itm.match(/^\d\d[\/-]\d\d[\/-]\d\d\d\d$/)) sortfn = ts_sort_date;
+        if (itm.match(/^\d\d[\/-]\d\d[\/-]\d\d$/)) sortfn = ts_sort_date;
+        if (itm.match(/^[?]/)) sortfn = ts_sort_currency;
+        if (itm.match(/^[\d\.]+$/)) sortfn = ts_sort_numeric;
+        SORT_COLUMN_INDEX = column;
+        var firstRow = new Array();
+        var newRows = new Array();
+        for (i = 0; i < table.rows[0].length; i++) {
+            firstRow[i] = table.rows[0][i];
+        }
+        for (j = 0; j < table.rows.length; j++) {
+            newRows[j] = table.rows[j];
+        }
+
+        newRows.sort(sortfn);
+
+        if (span.getAttribute("sortdir") == 'down') {
+            ARROW = '  ↑';
+            newRows.reverse();
+            span.setAttribute('sortdir', 'up');
+        } else {
+            ARROW = '  ↓';
+            span.setAttribute('sortdir', 'down');
+        }
+
+        // We appendChild rows that already exist to the tbody, so it moves them rather than creating new ones
+        // don't do sortbottom rows
+        for (i = 0; i < newRows.length; i++) {
+            if (!newRows[i].className || (newRows[i].className && (newRows[i].className.indexOf('sortbottom') == -1))) table.tBodies[0].appendChild(newRows[i]);
+        }
+        // do sortbottom rows only
+        for (i = 0; i < newRows.length; i++) {
+            if (newRows[i].className && (newRows[i].className.indexOf('sortbottom') != -1)) table.tBodies[0].appendChild(newRows[i]);
+        }
+
+        // Delete any other arrows there may be showing
+        var allspans = document.getElementsByTagName("span");
+        for (var ci = 0; ci < allspans.length; ci++) {
+            if (allspans[ci].className == 'sortarrow') {
+                if (getParent(allspans[ci], "table") == getParent(lnk, "table")) { // in the same table as us?
+                    allspans[ci].innerHTML = '   ';
+                }
+            }
+        }
+
+        span.innerHTML = ARROW;
+        $('#' + tableid + ' tr:even').css("background-color", "FFF7E8");
+        $('#' + tableid + ' tr:odd').css("background-color", "#CCE8CF");
+    }
+
+    function getParent(el, pTagName) {
+        if (el == null) return null;
+        else if (el.nodeType == 1 && el.tagName.toLowerCase() == pTagName.toLowerCase()) // Gecko bug, supposed to be uppercase
+            return el;
+        else
+            return getParent(el.parentNode, pTagName);
+    }
+
+    function ts_sort_date(a, b) {
+        // y2k notes: two digit years less than 50 are treated as 20XX, greater than 50 are treated as 19XX
+        aa = ts_getInnerText(a.cells[SORT_COLUMN_INDEX]);
+        bb = ts_getInnerText(b.cells[SORT_COLUMN_INDEX]);
+        if (aa.length == 10) {
+            dt1 = aa.substr(6, 4) + aa.substr(3, 2) + aa.substr(0, 2);
+        } else {
+            yr = aa.substr(6, 2);
+            if (parseInt(yr) < 50) {
+                yr = '20' + yr;
+            } else {
+                yr = '19' + yr;
+            }
+            dt1 = yr + aa.substr(3, 2) + aa.substr(0, 2);
+        }
+        if (bb.length == 10) {
+            dt2 = bb.substr(6, 4) + bb.substr(3, 2) + bb.substr(0, 2);
+        } else {
+            yr = bb.substr(6, 2);
+            if (parseInt(yr) < 50) {
+                yr = '20' + yr;
+            } else {
+                yr = '19' + yr;
+            }
+            dt2 = yr + bb.substr(3, 2) + bb.substr(0, 2);
+        }
+        if (dt1 == dt2) return 0;
+        if (dt1 < dt2) return -1;
+        return 1;
+    }
+
+    function ts_sort_currency(a, b) {
+        aa = ts_getInnerText(a.cells[SORT_COLUMN_INDEX]).replace(/[^0-9.]/g, '');
+        bb = ts_getInnerText(b.cells[SORT_COLUMN_INDEX]).replace(/[^0-9.]/g, '');
+        return parseFloat(aa) - parseFloat(bb);
+    }
+
+    function ts_sort_numeric(a, b) {
+        aa = parseFloat(ts_getInnerText(a.cells[SORT_COLUMN_INDEX]));
+        if (isNaN(aa)) aa = 0;
+        bb = parseFloat(ts_getInnerText(b.cells[SORT_COLUMN_INDEX]));
+        if (isNaN(bb)) bb = 0;
+        return aa - bb;
+    }
+
+    function ts_sort_caseinsensitive(a, b) {
+        aa = ts_getInnerText(a.cells[SORT_COLUMN_INDEX]).toLowerCase();
+        bb = ts_getInnerText(b.cells[SORT_COLUMN_INDEX]).toLowerCase();
+        if (aa == bb) return 0;
+        if (aa < bb) return -1;
+        return 1;
+    }
+
+    function ts_sort_default(a, b) {
+        aa = ts_getInnerText(a.cells[SORT_COLUMN_INDEX]);
+        bb = ts_getInnerText(b.cells[SORT_COLUMN_INDEX]);
+        if (aa == bb) return 0;
+        if (aa < bb) return -1;
+        return 1;
+    }
+
+    /**
+     * addEvent and removeEvent
+     * cross-browser event handling 'for' IE5+, NS6 and Mozilla
+     *  By Scott Andrew
+     */
+
+    function addEvent(elm, evType, fn, useCapture)
+
+    {
+        if (elm.addEventListener) {
+            elm.addEventListener(evType, fn, useCapture);
+            return true;
+        } else if (elm.attachEvent) {
+            var r = elm.attachEvent("on" + evType, fn);
+            return r;
+        } else {
+            alert("Handler could not be removed");
+        }
+    }
+    </script>
+</body>
+
+</html>

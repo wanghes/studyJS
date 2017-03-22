@@ -1,0 +1,127 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>history</title>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=0">
+  <link rel="stylesheet" type="text/css" href="css/bootstrap.min.css">
+  <link rel="stylesheet" type="text/css" href="css/animations.css">
+  <link rel="stylesheet" type="text/css" href="css/page.css">
+  <script type="text/javascript" src="js/jquery-2.0.2.js"></script>
+  <script type="text/javascript" src="js/bootstrap.min.js"></script>
+  <script type="text/javascript" src="js/modernizr.custom.js"></script>
+  <script type="text/javascript" src="js/animate.js"></script>
+</head>
+<body >
+<div class="pt-perspective" id="pt-main">
+  <div class="pt-page pt-page-current" id="partyHome" >
+      <div class="container">
+          <div class="row">
+              <div class="col-lg-12">
+                  <div class="jumbotron"><h1>页面1</h1></div>
+                  <div class="panel panel-default">
+                      <div class="panel-body">
+                          <div>页面1
+                          <br><br><br><br><br><br><br><br><br><br><br>
+                          </div>
+                          <a id="partyDetailBtn" class="btn btn-primary">查看</a>
+                      </div>
+                  </div>
+              </div>
+          </div>
+      </div>
+  </div>
+
+  <div class="pt-page" id="partyDetail">
+      <div class="container">
+          <div class="row">
+              <div class="col-lg-12">
+                  <div class="jumbotron"><h1>页面2</h1></div>
+                  <div class="panel panel-default">
+                      <div class="panel-body">
+                          <div>页面2</div>
+                          <a id="partyChaBtn" class="btn btn-primary">查看</a>
+                      </div>
+                  </div>
+              </div>
+          </div>
+      </div>
+  </div>
+
+  <div class="pt-page" id="partyCha">
+      <div class="container">
+          <div class="row">
+              <div class="col-lg-12">
+                  <div class="jumbotron"><h1>页面3</h1></div>
+                  <div class="panel panel-default">
+                      <div class="panel-body">
+                          <div>页面3</div>
+                      </div>
+                  </div>
+              </div>
+          </div>
+      </div>
+  </div>
+</div>
+</body>
+<script type="text/javascript">
+    /***新页面操作跳显示相应的hashID页面****/
+    if(location.hash){
+        $(location.hash).addClass('pt-page-current');
+     }
+
+     /*history.replaceState({ id: pi}, '',  location.origin + location.pathname + '#partyHome');*/
+
+
+    $(function(){
+        var $main = $( '#pt-main' ),
+            $pages = $main.children( 'div.pt-page' );
+
+        var pageData = {
+            name:'guan',
+            sex:'男'
+        }
+       /* $.get('http://localhost:3000/users/infos',{},function(data){
+
+        },'json');*/
+
+       $('#partyDetailBtn').click(function(){
+          pageData.name = "liu";
+          go('partyDetail');
+       });
+
+       $('#partyChaBtn').click(function(){
+          pageData.name = "zhang";
+          go('partyCha');
+       });
+/*
+        $(document).on('click','.has_history',function(){
+            var page = $(this).data('page');
+            go(page);
+        });
+*/
+        function go(page){
+            var hashID = '#'+page;
+
+            var url = location.origin + location.pathname + hashID;
+            window.history.pushState({id:hashID}, '', url);
+            AnimatePage('.pt-page-current',hashID,1);
+        }
+
+        $(window).on('hashchange' , function(){
+
+        });
+        $(window).on('popstate',function(){
+            var id;
+            var json = window.history.state;
+            if(json){
+              id = json.id;
+            }else{
+              id='#partyHome';
+            }
+            AnimatePage('.pt-page-current',id,2);
+        });
+
+    });
+</script>
+</html>

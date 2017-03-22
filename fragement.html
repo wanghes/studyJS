@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>history</title>
+</head>
+<body>
+
+</body>
+<script type="text/javascript">
+var body = document.querySelector('body');
+var frag = document.createDocumentFragment();
+console.time("Array initialize");
+for (var i = 0; i < 10000; i++)
+{
+    var el = document.createElement('p');
+    el.innerHTML = i; frag.appendChild(el);
+}
+body.appendChild(frag);
+console.timeEnd("Array initialize");
+</script>
+</html>

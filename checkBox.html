@@ -1,0 +1,134 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>css+js 多选项checkbox美化</title>
+	<style type="text/css">
+	*{padding: 0;margin: 0;}
+	.aa{position: relative;width: 80px;height: 40px;}
+	.hide{position: absolute;z-index: -1;}
+	.normal,.active{position: absolute;width: 30px;height: 30px;cursor: pointer;z-index: 1;left: 0;top: 0;}
+	.normal{background: url("images/check_01.jpg") no-repeat;}
+	.active{background: url("images/check_02.jpg") no-repeat;}
+	.checkboxContent{position: absolute;right: 0;top:6px;z-index: 1;cursor: pointer;}
+	</style>
+</head>
+<body>
+	<div id="example" style="width:200px;margin:50px auto;">
+		<div class="aa">
+			<input type="checkbox" class="hide" /><label class="normal"></label><span class='checkboxContent'>选项一</span>
+		</div>	
+		<div class="aa">
+			<input type="checkbox" class="hide" /><label class="normal"></label><span class='checkboxContent'>选项一</span>
+		</div>
+		<div class="aa">
+			<input type="checkbox" class="hide" /><label class="normal"></label><span class='checkboxContent'>选项一</span>
+		</div>
+		<div class="aa">
+			<input type="checkbox" class="hide" /><label class="normal"></label><span class='checkboxContent'>选项一</span>
+		</div>
+		<div class="aa">
+			<input type="checkbox" class="hide" /><label class="normal"></label><span class='checkboxContent'>选项一</span>
+		</div>
+		<div class="aa">
+			<input type="checkbox" class="hide" /><label class="normal"></label><span class='checkboxContent'>选项一</span>
+		</div>
+
+
+<div>
+		<input type="button" value="全选" id="allSelected" />
+		<input type="button" value="反选" id="reverseSelected"/>	
+	</div>	
+	</div>
+	
+	<script type="text/javascript">
+	function checkboxStyle()
+{
+	var wrap=arguments[0];
+	var allSelected=arguments[1];
+	var reverseSelected=arguments[2];
+	var label=wrap.getElementsByTagName('label');
+	var spanContent=wrap.getElementsByTagName('span');
+	for(var i=0,len=label.length;i<len;i++)//单选
+	{
+
+			label[i].className='normal';
+			label[i].onclick=function()
+			{
+				if(this.className=='normal')
+				{
+					this.className='active';
+					this.previousSibling.checked=true;
+				}
+				else
+				{
+					this.className='normal';
+					this.previousSibling.checked=false;
+				}
+			}
+			spanContent[i].onclick=function()
+			{
+				if(this.previousSibling.className=='normal')
+				{
+					this.previousSibling.className='active';
+					this.previousSibling.previousSibling.checked=true;
+				}
+				else
+				{
+					this.previousSibling.className='normal';
+					this.previousSibling.previousSibling.checked=false;
+
+				}
+			}
+	}
+	allSelected.onclick=function()//全选 全不选
+	{
+		if(this.value=='全选')
+		{
+			this.value='全不选';
+		}
+		else
+		{
+			this.value='全选';
+		}
+		for(var i=0;i<label.length;i++)
+		{
+			if(this.value=='全选')
+			{
+				label[i].className='normal';
+				label[i].previousSibling.checked=false;
+			}
+			else
+			{
+				label[i].className='active';
+				label[i].previousSibling.checked=true;
+			}
+
+		}
+	}
+	reverseSelected.onclick=function()
+	{
+		for(var i=0;i<label.length;i++)
+		{
+			
+			if(label[i].className=='normal')
+			{
+				label[i].className='active';
+				label[i].previousSibling.checked=true;
+			}
+			else
+			{
+				label[i].className='normal';
+				label[i].previousSibling.checked=false;
+			}
+		}
+	}
+}
+	var example=document.getElementById('example');
+	var allSelected=document.getElementById("allSelected");
+	var reverseSelected=document.getElementById('reverseSelected')
+	checkboxStyle(example,allSelected,reverseSelected);
+</script>
+</body>
+</html>

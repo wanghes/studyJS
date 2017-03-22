@@ -1,0 +1,68 @@
+ {
+    "code":true,
+    "data":[
+        {
+            "year":"2016",
+            "mouthData":[
+                {
+                    "mouth": "04",
+                    "money": "1000",
+                    "data":[
+                        {"month":"2016-04-30 10:16:54","receipt_money":"758.00","receipt_type":"专票","receipt_status_text":"审核中"},
+                        {"month":"2016-04-30 10:16:54","receipt_money":"758.00","receipt_type":"专票","receipt_status_text":"审核中"}
+                    ]
+                },
+                {
+                    "mouth": "03",
+                    "money": "1000",
+                    "data":[
+                        {"month":"2016-03-30 10:16:54","receipt_money":"758.00","receipt_type":"专票","receipt_status_text":"审核中"},
+                        {"month":"2016-03-30 10:16:54","receipt_money":"758.00","receipt_type":"专票","receipt_status_text":"审核中"}
+                    ]
+                },
+                {
+                    "mouth": "02",
+                    "money": "1000",
+                    "data":[
+                        {"month":"2016-02-30 10:16:54","receipt_money":"758.00","receipt_type":"专票","receipt_status_text":"审核中"},
+                        {"month":"2016-02-30 10:16:54","receipt_money":"758.00","receipt_type":"专票","receipt_status_text":"审核中"}
+                    ]
+                }
+            ]
+        },
+        {
+            "year":"2015",
+            "mouthData":[
+                {
+                    "mouth": "04",
+                    "money": "1000",
+                    "data":[
+                        {"month":"2015-04-30 10:16:54","receipt_money":"758.00","receipt_type":"专票","receipt_status_text":"审核中"},
+                        {"month":"2015-04-30 10:16:54","receipt_money":"758.00","receipt_type":"专票","receipt_status_text":"审核中"}
+                    ]
+                },
+                {
+                    "mouth": "03",
+                    "money": "1000",
+                    "data":[
+                        {"month":"2015-03-30 10:16:54","receipt_money":"758.00","receipt_type":"专票","receipt_status_text":"审核中"},
+                        {"month":"2015-03-30 10:16:54","receipt_money":"758.00","receipt_type":"专票","receipt_status_text":"审核中"}
+                    ]
+                },
+                {
+                    "mouth": "02",
+                    "money": "1000",
+                    "data":[
+                        {"month":"2015-02-30 10:16:54","receipt_money":"758.00","receipt_type":"专票","receipt_status_text":"审核中"},
+                        {"month":"2015-02-30 10:16:54","receipt_money":"758.00","receipt_type":"专票","receipt_status_text":"审核中"}
+                    ]
+                }
+            ]
+        }
+    ]
+ }
+ 
+    
+
+
+     

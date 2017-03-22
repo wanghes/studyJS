@@ -1,0 +1,283 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>静态文本内容分页</title>
+    <meta charset="utf-8">
+    <style>
+    * {
+        font-size: 10.2pt;
+        font-family: tahoma;
+        line-height: 150%;
+        margin:0;
+        padding:0;
+        border:0;
+    }
+    html, body{
+        height:100%;
+    }
+    .footer {
+        height:80px;
+        line-height: 80px;
+        background: #000;
+        width:100%;
+        text-align: center;
+        color: #fff;
+    }
+     .container {
+        min-height:100%; /*使内容高度和body一样*/
+        margin-bottom:-80px;/*向上缩减80像素，不至于footer超出屏幕可视范围*/
+        background-color:#f5f5f5;
+    }
+    .content {
+       padding-bottom:80px; /*这个是关键，处理页面高度超出屏幕可视范围时，控制内容和底部高度之间距离*/
+
+    }
+
+    input{
+        padding: 3px 15px;
+        border:1px solid #dfdfdf;
+    }
+    input[type="button"]{
+        background: #999;
+        border:1px solid #999;
+        color:#fff;
+        cursor: pointer;
+        transition: all .2s linear;
+    }
+    input[type="button"]:hover{
+        background: #ee8508;
+        border:1px solid #ee8508;
+    }
+    .header{
+        width:100%;
+        background: #000;
+        display: flex;
+        justify-content: center;
+        line-height: 50px;
+        height: 50px;
+        align-items: center;
+    }
+    .header h3{
+        font-weight: normal;
+        font-size:16px;
+        color:#fff;
+    }
+    .content{
+        display: flex;
+        justify-content: center;
+        flex-flow: column wrap;
+        align-items:center;
+    }
+    .divContent {
+        border: 1px solid #43bbf4;
+        background-color: #cdedfd;
+        width: 800px;
+        min-height: 400px;
+        word-break: break-all;
+        margin: 10px 0px 10px;
+        padding: 10px;
+    }
+    #divPagenation{
+        max-width: 800px;
+        text-align: center;
+    }
+    #divPagenation a{
+        margin: 5px;
+        display: inline-block;
+        height: 32px;
+        line-height: 32px;
+        padding:0 15px;
+        background: #ccc;
+        color:#fff;
+        text-decoration:none;
+        cursor: pointer;
+        border-radius: 3px;
+        transition: all .2s ease-out;
+    }
+    #divPagenation a.jumpPage{
+        background: #999;
+        text-decoration:none;
+    }
+    #divPagenation a.prevPage,#divPagenation a.nextPage{
+        background: #999;
+        text-decoration:none;
+    }
+    #divPagenation a.jumpPage.active{
+        background: #ee8508;
+        color:#fff;
+    }
+
+    .box{
+        margin: 10px 0;
+    }
+    .box span{
+        color:#ee8508;
+        font-weight: bolder;
+        font-size: 16px;
+    }
+    </style>
+</head>
+
+<body>
+
+    <div class="container">
+        <div class="header">
+            <h3>静态文本内容分页</h3>
+        </div>
+        <div class="content">
+            <div id="divContent"></div>
+            <div id="divPagenation"></div>
+        </div>
+    </div>
+
+    <div class="footer">
+        底部元素
+    </div>
+    <script type="text/javascript">
+    s = "接口是面向对象JavaScript程序员的工具箱中最有用的工具之一。在设计模式中提出的可重用的面向对象设计的原则之一就是“针对接口编程而不是实现编程”，即我们所说的面向接口编程，这个概念的重要性可见一斑。但问题在于，在JavaScript的世界中，没有内置的创建或实现接口的方法，也没有可以判断一个对象是否实现了与另一个对象相同的一套方法，这使得对象之间很难互换使用，好在JavaScript拥有出色的灵活性，这使得模拟传统面向对象的接口，添加这些特性并非难事。接口提供了一种用以说明一个对象应该具有哪些方法的手段，尽管它可以表明这些方法的含义，但是却不包含具体实现。有了这个工具，就能按对象提供的特性对它们进行分组。例如，假如A和B以及接口I，即便A对象和B对象有极大的差异，只要他们都实现了I接口，那么在A.I(B)A和B，如B.I(A)。还可以使用接口开发不同的类的共同性。如果把原本要求以一个特定的类为参数的函数改为要求以一个特定的接口为参数的函数，那么所有实现了该接口的对象都可以作为参数传递给它，这样一来，彼此不相关的对象也可以被相同地对待。";
+
+    function StringPagenation(content) {
+        this.content = content;
+        this.contentLength = content.length;
+        this.pageSizeCount;
+        this.perpageLength = 100;
+        this.currentPage = 1;
+        this.regularExp = /\d+/;
+        this.divDisplayContent;
+        this.contentStyle = null;
+        this.strDisplayContent = "";
+        this.divDisplayPagenation;
+        this.strDisplayPagenation = "";
+        arguments.length == 2 ? this.perpageLength = arguments[1] : '';
+        try {
+            this.divExecuteTime = document.createElement("DIV");
+            document.body.appendChild(divExecuteTime);
+        } catch (e) {}
+        if (document.getElementById("divContent")) {
+            this.divDisplayContent = document.getElementById("divContent");
+        } else {
+            try {
+                this.divDisplayContent = document.createElement("DIV");
+                this.divDisplayContent.id = "divContent";
+                document.body.appendChild(this.divDisplayContent);
+            } catch (e) {
+                return false;
+            }
+        }
+        if (document.getElementById("divPagenation")) {
+            this.divDisplayPagenation = document.getElementById("divPagenation");
+        } else {
+            try {
+                this.divDisplayPagenation = document.createElement("DIV");
+                this.divDisplayPagenation.id = "divPagenation";
+                document.body.appendChild(this.divDisplayPagenation);
+            } catch (e) {
+                return false;
+            }
+        }
+        this.initialize();
+    };
+    StringPagenation.prototype.initialize = function() {
+        this.divDisplayContent.className = this.contentStyle != null ? this.contentStyle : "divContent";
+        if (this.contentLength <= this.perpageLength) {
+            this.strDisplayContent = this.content;
+            this.divDisplayContent.innerHTML = this.strDisplayContent;
+            return null;
+        }
+        this.pageSizeCount = Math.ceil((this.contentLength / this.perpageLength));
+        this.goto(this.currentPage,this);//初始化的时候先跳转到第一页，并给每一个a元素绑定事件
+        this.displayContent();
+    };
+    StringPagenation.prototype.displayPage = function() {
+        this.strDisplayPagenation = "";
+        if (this.currentPage && this.currentPage != 1){
+            this.strDisplayPagenation += '<a href="javascript:void(0)" class="prevPage">上一页</a>';
+        }else{
+            this.strDisplayPagenation += "<a>上一页</a>";
+        }
+        for (var i = 1; i <= this.pageSizeCount; i++) {
+            if (i != this.currentPage){
+                this.strDisplayPagenation += '<a href="javascript:void(0)" data-property="background-color" data-from="slategray" data-to="black" class="jumpPage">' + i + '</a>';
+            }else{
+                this.strDisplayPagenation += '<a href="javascript:void(0)" class="jumpPage active">'+ i + "</a>";
+            }
+        }
+        if (this.currentPage && this.currentPage != this.pageSizeCount){
+            this.strDisplayPagenation += '<a href="javascript:void(0)" class="nextPage">下一页</a>';
+        }else{
+            this.strDisplayPagenation += "<a>下一页</a>";
+        }
+        this.strDisplayPagenation += "<div class='box'>共 <span>" + this.pageSizeCount + "</span> 页，每页 <span>" + this.perpageLength + "</span> 字符<div><div class='box'><input type='text' placeholder='设置显示的字符数' id='ctlPerpageLength'><input type='button' id='ctlBtn' value='确定' onclick='StringPagenation.change(document.getElementById(\"ctlPerpageLength\").value);'></div>";
+        this.divDisplayPagenation.innerHTML = this.strDisplayPagenation;
+    };
+    StringPagenation.prototype.bindEvents = function(){
+        var prevPage = document.querySelector('.prevPage'),len;
+        var jumpPage = document.querySelectorAll('.jumpPage');
+        var nextPage = document.querySelector('.nextPage');
+        var ctlBtn = document.querySelector('#ctlBtn');
+        var self = this;
+        ctlBtn.addEventListener('click',function(){
+            self.change(document.getElementById("ctlPerpageLength").value);
+        },false)
+        if(prevPage){
+            prevPage.addEventListener('click',function(){
+                self.previous(self);
+            },false);
+        }
+        if(jumpPage){
+            if(jumpPage.length>0){
+                len = jumpPage.length;
+                for(var i=0; i<len; i++){
+                    (function(num){
+                        jumpPage[num].addEventListener('click',function(){
+                            self.goto(num+1,self);
+                            this.classList.add('active');
+                        },false);
+                    })(i)
+                }
+            }
+        }
+        if(nextPage){
+            console.log(1);
+             nextPage.addEventListener('click',function(){
+                 self.next(self);
+            },false);
+        }
+
+    };
+    StringPagenation.prototype.previous = function(obj) {
+        this.goto(obj.currentPage - 1,obj);
+    };
+    StringPagenation.prototype.next = function(obj) {
+        this.goto(obj.currentPage + 1,obj);
+    };
+    StringPagenation.prototype.goto = function(iCurrentPage,obj) {
+        obj.startime = new Date();
+        if (obj.regularExp.test(iCurrentPage)) {
+            obj.currentPage = iCurrentPage;
+            obj.strDisplayContent = obj.content.substr((obj.currentPage - 1) * obj.perpageLength, obj.perpageLength);
+        } else {
+            console.log("page parameter error!");
+        }
+        obj.displayPage();
+        obj.displayContent();
+        obj.bindEvents();
+    };
+    StringPagenation.prototype.displayContent = function() {
+        this.divDisplayContent.innerHTML = this.strDisplayContent;
+    };
+    StringPagenation.prototype.change = function(iPerpageLength) {
+        if (this.regularExp.test(iPerpageLength)) {
+            this.perpageLength = iPerpageLength;
+            this.currentPage = 1;
+            this.initialize();
+        } else {
+            alert("请输入数字");
+        }
+    };
+
+    var pager = new StringPagenation(s, 50);
+    </script>
+</body>
+
+</html>

@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>history</title>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=0">
+  <style type="text/css">
+    body{
+      margin:0;
+      height:100vh;
+      background: #f5f5f5;
+      padding: 0;
+      display: flex;
+      justify-content: center;
+      align-items:center;
+    }
+    button{
+      display: inline-block;
+      font-size:16px;
+      background: #666;
+      color:#fff;
+      border:0;
+      padding:15px;
+    }
+  </style>
+</head>
+<body>
+<button onclick="jump()">跳转</button>
+</body>
+<script type="text/javascript">
+function jump(){
+	var json={time:new Date().getTime()};
+		window.history.pushState(json,"","http://localhost:4500/pageone");
+		console.log(json);
+}
+ window.onpopstate=function()
+  {
+      // 获得存储在该历史记录点的json对象
+      var json = window.history.state;
+      // 点击一次回退到：http://xxx.com/index.html
+      // 获得的json为null
+      // 再点击一次前进到：http://xxx.com/post.html
+      // 获得json为{time:1369647895656}
+      console.log(json);
+ }
+</script>
+</html>

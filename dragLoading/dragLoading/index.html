@@ -1,0 +1,153 @@
+<!DOCTYPE html>
+<html data-livestyle-extension="available">
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width,initial-scale=1,user-scalable=no">
+    <title>下拉刷新演示</title>
+    <style>
+    body {
+        margin: 0;
+    }
+
+    .loading {
+        line-height: 40px;
+        height: 0;
+        text-align: center;
+        transition: height .25s, border-bottom-width .25s;
+        background-color: #eee;
+        font-size: 14px;
+        overflow: hidden;
+    }
+    </style>
+</head>
+
+<body>
+    <div id="loading" class="loading" style="border-bottom: 0px solid transparent; height: 0px;" data-loading="false">下拉加载...</div>
+    <ol id="result">
+        <li>列表内容605377254</li>
+        <li>列表内容406030429</li>
+        <li>列表内容1564</li>
+        <li>列表内容9629</li>
+        <li>列表内容84503</li>
+        <li>列表内容174848</li>
+        <li>列表内容4464</li>
+        <li>列表内容41048019</li>
+        <li>列表内容814</li>
+        <li>列表内容2806</li>
+        <li>列表内容5947135</li>
+        <li>列表内容638</li>
+        <li>列表内容171802</li>
+        <li>列表内容718</li>
+        <li>列表内容6153187601</li>
+        <li>列表内容847789455</li>
+        <li>列表内容505509285</li>
+        <li>列表内容6494325</li>
+        <li>列表内容4567733305</li>
+        <li>列表内容281709957</li>
+        <li>列表内容04505</li>
+        <li>列表内容443954</li>
+        <li>列表内容853563</li>
+        <li>列表内容596</li>
+        <li>列表内容0026</li>
+        <li>列表内容03</li>
+        <li>列表内容1113142198</li>
+        <li>列表内容146069229</li>
+        <li>列表内容885</li>
+        <li>列表内容13</li>
+        <li>列表内容66301598</li>
+        <li>列表内容8</li>
+        <li>列表内容16</li>
+        <li>列表内容25048687</li>
+        <li>列表内容81</li>
+        <li>列表内容9159987001</li>
+        <li>列表内容977158863</li>
+        <li>列表内容404</li>
+        <li>列表内容6684172188</li>
+        <li>列表内容5</li>
+        <li>列表内容5</li>
+        <li>列表内容1768</li>
+        <li>列表内容09379437</li>
+        <li>列表内容274685</li>
+        <li>列表内容9944</li>
+        <li>列表内容2087</li>
+        <li>列表内容24</li>
+        <li>列表内容9732134</li>
+        <li>列表内容7844694672</li>
+        <li>列表内容6</li>
+        <li>列表内容61</li>
+        <li>列表内容820581</li>
+        <li>列表内容51</li>
+        <li>列表内容166968874</li>
+        <li>列表内容3703</li>
+        <li>列表内容4371</li>
+        <li>列表内容63538094</li>
+        <li>列表内容266091824</li>
+        <li>列表内容21493</li>
+        <li>列表内容58233</li>
+        <li>列表内容8</li>
+        <li>列表内容4314272</li>
+        <li>列表内容78</li>
+        <li>列表内容428858812</li>
+        <li>列表内容538</li>
+        <li>列表内容57</li>
+        <li>列表内容4624</li>
+        <li>列表内容5349</li>
+        <li>列表内容1405687</li>
+        <li>列表内容320686374</li>
+        <li>列表内容7391</li>
+        <li>列表内容355078</li>
+        <li>列表内容6272627</li>
+        <li>列表内容114</li>
+        <li>列表内容5033</li>
+        <li>列表内容772409</li>
+        <li>列表内容779493</li>
+        <li>列表内容5</li>
+        <li>列表内容3748314</li>
+        <li>列表内容5</li>
+        <li>列表内容43334</li>
+        <li>列表内容250858663</li>
+        <li>列表内容56726024</li>
+        <li>列表内容8615730984</li>
+        <li>列表内容7</li>
+        <li>列表内容212767375</li>
+        <li>列表内容255863</li>
+        <li>列表内容6700826338</li>
+        <li>列表内容5250799</li>
+        <li>列表内容777424</li>
+        <li>列表内容328</li>
+        <li>列表内容432427</li>
+        <li>列表内容3</li>
+        <li>列表内容1740855</li>
+        <li>列表内容0436683653</li>
+        <li>列表内容6658</li>
+        <li>列表内容606841</li>
+        <li>列表内容82</li>
+        <li>列表内容3057696459</li>
+        <li>列表内容5297303121</li>
+    </ol>
+    <script src="zepto.min.js"></script>
+    <script src="drag-loading.js"></script>
+    <script>
+    var fnCreateList = function() {
+        var html = '';
+        for (var index = 0; index < 100; index += 1) {
+            html = html + '<li>列表内容' + (Math.random() + '').slice(-1 * Math.ceil(10 * Math.random())) + '</li>'
+        }
+        $('#result').html(html);
+    };
+    fnCreateList();
+
+    new DragLoading($('#loading'), {
+        onReload: function() {
+            var self = this;
+            setTimeout(function() {
+                fnCreateList();
+                self.origin();
+            }, 2000 * Math.random());
+        }
+    });
+    </script>
+</body>
+
+</html>

@@ -1,0 +1,85 @@
+
+	<link rel="stylesheet" type="text/css" href="./src/jquery.tagsinput.css" />
+	<script type="text/javascript" src="jquery.min.js"></script>
+	<script type="text/javascript" src="./src/jquery.tagsinput.js"></script>
+
+	<script type='text/javascript' src='jquery-ui.min.js'></script>
+	<link rel="stylesheet" type="text/css" href="jquery-ui.css" />
+
+
+	<script type="text/javascript">
+
+		function onAddTag(tag) {
+			console.log("Added a tag: " + tag);
+		}
+		function onRemoveTag(tag) {
+			alert("Removed a tag: " + tag);
+		}
+
+		function onChangeTag(input,tag) {
+			alert("Changed a tag: " + tag);
+		}
+		var addNameList = new Array();
+		$(function() {
+
+			$('#tags_1').tagsInput({width:'auto'});
+			$('#tags_2').tagsInput({
+				width: 'auto',
+				onChange: function(elem, elem_tags)
+				{
+					var languages = ['php','ruby','javascript'];
+					$('.tag', elem_tags).each(function()
+					{
+						if($(this).text().search(new RegExp('\\b(' + languages.join('|') + ')\\b')) >= 0)
+							$(this).css('background-color', 'yellow');
+					});
+				}
+			});
+
+var initStr = "asdsad,asd,as,sad,asda"
+			$('#tags_3').importTags(initStr)
+			addNameList = initStr.split(',');
+			console.log(addNameList);
+			$('#tags_3').tagsInput({
+				width: 'auto',
+				unique:true,
+				minInputWidth:150,
+				minChars:2,
+				autocomplete:{selectFirst:true,width:'100px',autoFill:true,minLength:2,position: { my : "right top", at: "right bottom" }},
+				onAddTag: function (tag) {
+					addNameList.push(tag);
+                	$('#tags').addTag(tag);
+                	console.log(addNameList);
+                },
+				onRemoveTag: function (tag) {
+					var i = addNameList.indexOf(tag);
+	            	addNameList.splice(i,1);
+	                $('#tags').removeTag(tag);
+	                console.log(addNameList);
+                },
+                onChange:function(obj,last){
+                	console.log(last);
+                	console.log(obj);
+                },
+				autocomplete_url:'http://localhost:3000/users' // jquery ui autocomplete requires a json endpoint
+			});
+		});
+
+		function initFunc(event){
+
+			console.log(addNameList);
+		}
+
+	</script>
+		<form>
+			<p><label>Defaults:</label>
+			<input id="tags_1" type="text" class="tags" value="foo,bar,baz,roffle" /></p>
+
+			<p><label>Technologies: (Programming languages in yellow)</label>
+			<input id="tags_2" type="text" class="tags" value="php,ios,javascript,ruby,android,kindle" /></p>
+
+			<p><label>Autocomplete:</label>
+			<input id='tags_3' type='text' class='tags'></p>
+
+			<a href="javascript:;" onclick="initFunc()">click</a>
+		</form>

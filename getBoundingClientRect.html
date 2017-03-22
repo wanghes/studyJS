@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>getBoundingClientRect</title>
+	<meta charset="utf-8">
+	<style type="text/css">
+		#demo{
+			width:500px;
+			height:500px;
+			background: red;
+			margin-top:1000px;
+		}
+	</style>
+</head>
+<body>
+<div id="demo"></div>
+</body>
+</html>
+<script type="text/javascript">
+alert("top:" + this.getBoundingClientRect().top);
+	document.getElementById('demo').onclick = function() {
+		if (document.documentElement.getBoundingClientRect) {
+			alert("width:" + this.getBoundingClientRect().width);
+			alert("height:" + this.getBoundingClientRect().height);
+			alert("left:" + this.getBoundingClientRect().left);
+			alert("top:" + this.getBoundingClientRect().top);
+			alert("right:" + this.getBoundingClientRect().right);
+			alert("bottom:" + this.getBoundingClientRect().bottom);
+			var X = this.getBoundingClientRect().left + document.documentElement.scrollLeft;
+			var Y = this.getBoundingClientRect().top + document.documentElement.scrollTop;
+			alert("Demo的位置是X:" + X + ";Y:" + Y);
+		}else{
+			alert('浏览器不支持document.documentElement.getBoundingClientRect');
+		}
+	}
+</script>

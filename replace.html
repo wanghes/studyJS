@@ -1,0 +1,64 @@
+<!DOCTYPE  html>
+<html>
+<head>
+	<title>replace正则</title>
+	<meta charset="utf-8">
+</head>
+<body>
+<script type="text/javascript">
+
+var str="中华人民共和国，中华人民共和国";
+var newstr=str.replace(/(人)/g,"<font color=red>$1</font>");
+document.write(newstr+'<br>');
+
+
+var s=prompt("请输入在查找的字符","民共");
+var reg=new RegExp("("+s+")","g");
+var str="中华人民共和国，中华人民共和国";
+var newstr=str.replace(reg,"<font color=red>$1</font>");
+document.write(newstr);
+
+
+function test(){
+ alert("参数个数："+arguments.length);
+ alert("每一个参数的值："+arguments[0]);
+ alert("第二个参数的值"+arguments[1]);
+ //可以用for循环读取所有的参数
+}
+
+/**test("aa","bb","cc");**/
+/*function test2(){
+	for(var i=0;i<arguments.length;i++){
+ 		alert("第"+(i+1)+"个参数的值："+arguments[i]);
+	}
+}
+
+var reg=new RegExp("\\d","g");
+var str="abd1afa4sdf";
+str.replace(reg,test2);**/
+document.write('<br>');
+
+
+function test3($1){
+ return "<font color='red'>"+$1+"</font>";
+}
+var s1=prompt("请输入在查找的字符","人");
+var reg1=new RegExp("("+s1+")","g");
+var str1="中华人民共和国，中华人民共和国";
+var newstr1=str1.replace(reg1,test3);
+document.write(newstr1);
+
+
+
+var str2="他今年22岁，她今年20岁，他的爸爸今年45岁，她的爸爸今年44岁，一共有4人"
+function test4($1){
+ var gyear=(new Date()).getYear()-parseInt($1)+1;
+ return $1+"("+gyear+"年出生)";
+}
+var reg2=new RegExp("(\\d+)岁","g");
+var newstr2=str2.replace(reg2,test4);
+alert(str2);
+alert(newstr2);
+</script>
+</body>
+</html>

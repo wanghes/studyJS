@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <title></title>
+</head>
+<body>
+<div id="html"></div>
+<script type="text/javascript">
+    var listInfos = new Array();
+    listInfos[0] = new Array();
+    listInfos[0][0] = {
+        'name':'推荐页1',
+        'DayCount':666,
+        'AvgTime':29872,
+        'ErrCount':180663,
+        'ErrorRate':'2873%',
+        'DaySystemErrorCount':0,
+        'DaySystemrErrorRate':'0%'
+    }
+    listInfos[0][1] = {'name':'推荐页2','DayCount':593896,'AvgTime':24946,'ErrCount':222,'ErrorRate':'2%','DaySystemErrorCount':0,'DaySystemrErrorRate':'0%'}
+    listInfos[0][2] = {'name':'推荐页3','DayCount':956,'AvgTime':27957,'ErrCount':111,'ErrorRate':'10%','DaySystemErrorCount':0,'DaySystemrErrorRate':'0%'}
+    listInfos[1] = new Array();
+    listInfos[1][0] = {'name':'推荐页4','DayCount':666,'AvgTime':116,'ErrCount':180663,'ErrorRate':'2873%','DaySystemErrorCount':0,'DaySystemrErrorRate':'0%'}
+    listInfos[1][1] = {'name':'推荐页5','DayCount':11,'AvgTime':222,'ErrCount':222,'ErrorRate':'2%','DaySystemErrorCount':0,'DaySystemrErrorRate':'0%'}
+    listInfos[1][2] = {'name':'推荐页6','DayCount':956,'AvgTime':956,'ErrCount':111,'ErrorRate':'10%','DaySystemErrorCount':0,'DaySystemrErrorRate':'0%'}
+    function dateDesc(listInfos,field){
+        for( var i=0; i < listInfos.length ; i++ ){
+            for( var j = i+1 ; j < listInfos.length ; j++ ){
+                if( isCommaPercent(listInfos[i][field]) < isCommaPercent(listInfos[j][field]) ){
+                    var arrayTemp = new Array();
+                    arrayTemp = listInfos[i];
+                    listInfos[i] = listInfos[j];
+                    listInfos[j] = arrayTemp;
+                }
+
+            }
+        }
+        return listInfos;
+    }
+    function dataAsc(listInfos,field){
+        for( var i=0; i < listInfos.length ; i++ ){
+            for( var j = i+1 ; j < listInfos.length ; j++ ){
+                if( isCommaPercent(listInfos[i][field]) > isCommaPercent(listInfos[j][field]) ){
+                    var arrayTemp = new Array();
+                    arrayTemp = listInfos[i];
+                    listInfos[i] = listInfos[j];
+                    listInfos[j] = arrayTemp;
+                }
+
+            }
+        }
+        return listInfos;
+    }
+
+    function isCommaPercent(value){
+        var valueFloat;
+        value = value.toLocaleString();
+        valueFloat = ( value.indexOf(',') > 0 )? value.split(',').join(''):value;
+        valueFloat = (valueFloat.indexOf('%') > 0)?parseFloat(valueFloat.substr(0,valueFloat.indexOf('%'))): parseFloat(valueFloat);
+        return valueFloat;
+    }
+
+
+
+    function sortOperation(sortInfos,field,sort){
+        var listInfos = new Array();
+        if( sort == 'desc' ){
+            for(var i=0; i < sortInfos.length ; i++ ){
+                listInfos[i] = dateDesc(sortInfos[i],field);
+            }
+        }else if( sort == 'asc' ){
+            for(var i=0; i < sortInfos.length ; i++ ){
+                listInfos[i] = dataAsc(sortInfos[i],field);
+            }
+        }else{
+            alert('操作错误...');
+            return false;
+        }
+
+        var tableStrList ='';
+        for( var i=0; i < listInfos.length ; i++ ){
+            var tableStr='<h1>程序</h1>';
+            tableStr+= '<table width="100%" cellspacing="0" cellpadding="0" border="1" class="programTabble"><tbody><tr class="indexTableTr">';
+            tableStr +='<td width="16%">程序名称</td><td width="14%">当天访问量(次)</td><td width="14%">平均响应时间(us)</td><td width="14%">错误数(次)</td>';
+            tableStr +='<td width="14%">错误率(%)</td> <td width="14%">系统错误数(次)</td> <td width="14%">系统错误率(%)</td> </tr> ';
+            for( var j = 0 ; j < listInfos[i].length ; j++ ){
+                tableStr +='<tr>';
+                tableStr +='<td><a href="detail.php?type=programs&pid=1">'+listInfos[i][j]['name']+'</a></td>';
+                tableStr +='<td>'+listInfos[i][j]['DayCount']+'</td>';
+                tableStr +='<td>'+listInfos[i][j]['AvgTime']+'</td>';
+                tableStr +='<td>'+listInfos[i][j]['ErrCount']+'</td>';
+                tableStr +='<td>'+listInfos[i][j]['ErrorRate']+'</td>';
+                tableStr +='<td>'+listInfos[i][j]['DaySystemErrorCount']+'</td>';
+                tableStr +='<td>'+listInfos[i][j]['DaySystemrErrorRate']+'</td>';
+                tableStr +='</tr>';
+            }
+            tableStr +='</tbody></table>';
+            tableStrList += tableStr
+        }
+
+        document.getElementById("html").innerHTML=tableStrList;
+    }
+    sortOperation(listInfos,'DayCount','asc')
+</script>
+</body>
+</html>

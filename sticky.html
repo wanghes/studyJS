@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title></title>
+    <style type="text/css">
+    body {
+        margin: 0;
+        text-align: center;
+        font-family: sans-serif;
+    }
+
+    .fixed {
+        position: fixed;
+        top: 0;
+    }
+
+    .sticky {
+        width: 100%;
+        background: #F6D565;
+        padding: 25px 0;
+        text-transform: uppercase;
+    }
+    </style>
+</head>
+
+<body>
+</body>
+
+</html>
+<p style="margin-bottom:100px;">Scroll this page.</p>
+<div class="sticky">
+    <h3>Super amazing header</h3></div>
+<p style="margin-top:500px;">Still there?</p>
+<p style="margin-top:500px;">Yep!</p>
+<p style="margin-top:500px;">Scroll so hard!</p>
+<!-- <div class="sticky"><h3>Super amazing header2</h3></div> -->
+
+<p style="margin-top:500px;">Still there?</p>
+<p style="margin-top:500px;">Yep!</p>
+<p style="margin-top:500px;">Scroll so hard!</p>
+<p style="margin-top:500px;">Still there?</p>
+<p style="margin-top:500px;">Yep!</p>
+<p style="margin-top:500px;">Scroll so hard!</p>
+<script type="text/javascript">
+window.onload = function() {
+    var sticky = document.querySelectorAll('.sticky');
+    var origOffsetY = sticky.offsetTop;
+
+    function onScroll(e) {
+        for (var i = 0; i < sticky.length; i++) {
+          console.log('window.scrollY='+window.scrollY)
+          console.log('sticky['+i+'].offsetTop='+sticky[i].offsetTop)
+            window.scrollY >= sticky[i].offsetTop ? sticky[i].classList.add('fixed') :
+                sticky[i].classList.remove('fixed');
+
+        }
+    }
+
+    document.addEventListener('scroll', onScroll);
+}
+</script>

@@ -1,0 +1,130 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title></title>
+    <style type="text/css">
+        .btn{
+            display: inline-block;
+            padding: 5px 15px;
+            background: #aaa;
+            color:#fff;
+            text-decoration: none;
+        }
+        .alert{
+            position: absolute;
+            opacity: 0;
+            top:100px;
+            left:10px;
+            background: #e68383;
+            display: none;
+            width:220px;
+            height: 40px;
+            line-height: 40px;
+            color:#fff;
+            text-align:center;
+        }
+    </style>
+</head>
+<body>
+<div class="alert">
+    <span>消息信息提示！</span>
+</div>
+<div>
+    <a href="javascript:;" class="btn" id="debounce">debounce等待1秒事件</a>
+    <a href="javascript:;" class="btn" id="throttle">throttle等待2秒事件</a>
+</div>
+<script type="text/javascript">
+    function fadeIn(el,delay) {
+        el.style.display="block";
+        el.style.opacity = 0;
+
+        var last = +new Date();
+        var tick = function() {
+            el.style.opacity = +el.style.opacity + (new Date() - last) / delay; //300是可改的，数字越大，显示的速度越慢
+            last = +new Date();
+            if (+el.style.opacity < 1) {
+                (window.requestAnimationFrame && requestAnimationFrame(tick)) || setTimeout(tick, 16);
+            }
+        };
+        tick();
+    }
+
+    function fadeOut(el,delay) {
+      el.style.opacity = 1;
+      var last = +new Date();
+      var tick = function() {
+        el.style.opacity = +el.style.opacity - (new Date() - last) / delay;
+        last = +new Date();
+
+        if (+el.style.opacity >0) {
+          (window.requestAnimationFrame && requestAnimationFrame(tick)) || setTimeout(tick, 16);
+        }
+        if(el.style.opacity<0){
+            el.style.display="none";
+        }
+      };
+      tick();
+    }
+
+    /**
+    * 空闲控制 返回函数连续调用时，空闲时间必须大于或等于 idle，action 才会执行
+    * @param idle   {number}    空闲时间，单位毫秒
+    * @param action {function}  请求关联函数，实际应用需要调用的函数
+    * @return {function}    返回客户调用函数
+    */
+    var debounce = function(idle, action){
+        var last
+        return function(){
+            var ctx = this, args = arguments;
+            clearTimeout(last);
+            last = setTimeout(function(){
+                action.apply(ctx, args)
+            }, idle)
+      }
+    }
+
+    /**
+    * 频率控制 返回函数连续调用时，action 执行频率限定为 次 / delay
+    * @param delay  {number}    延迟时间，单位毫秒
+    * @param action {function}  请求关联函数，实际应用需要调用的函数
+    * @return {function}    返回客户调用函数
+    */
+    var throttle = function(delay, action){
+        var last = 0;
+        return function(){
+            var curr = +new Date()
+            if (curr - last > delay){
+                action.apply(this, arguments)
+                last = curr
+            }
+        }
+    }
+
+    document.addEventListener('DOMContentLoaded', function() {
+        let timer;
+        let throttleNode = document.querySelector('#throttle');
+        let debounceNode = document.querySelector('#debounce');
+        let alert = document.querySelector('.alert');
+
+        throttleNode.addEventListener('click',throttle(2000,function(){
+            console.log("throttle");
+            if(timer) clearTimeout(timer);
+            fadeIn(alert,300);
+            timer = setTimeout(function(){
+                    fadeOut(alert,300);
+            },2000);
+        }),false);
+
+        debounceNode.addEventListener('click',debounce(1000,function(){
+            console.log("debounce");
+            if(timer) clearTimeout(timer);
+            fadeIn(alert,300);
+            timer = setTimeout(function(){
+                    fadeOut(alert,300);
+            },2000);
+        }),false);
+
+    }, false);
+</script>
+</body>
+</html>

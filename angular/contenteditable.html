@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="en" ng-app="app">
+
+<head>
+    <meta charset="UTF-8">
+    <title>Angularjs</title>
+    <style>
+    div[contenteditable]{
+      border:1px solid #ccc;
+      padding:5px;
+    }
+      .error{
+        color:#fff;
+        display: block;
+        padding:5px;
+        border:1px solid #ca4141;
+        background: #ca4141;
+      }
+    </style>
+</head>
+<script src="lib/angular.min.js" type="text/javascript"></script>
+<script src="lib/jquery.js" type="text/javascript"></script>
+<style>
+</style>
+
+<body ng-controller="myCon">
+    <form name="myForm">
+        <div contenteditable name="myWidget" ng-model="userContent" strip-br="true" required>Change me!</div>
+        <span class="error" ng-if="myForm.myWidget.$error.required">Required!</span>
+        <span class="error" ng-if="myForm.myWidget.$error.email">email 格式不正确!</span>
+        <input type="text" ng-model="userContent">
+        <div><button type="submit" ng-disabled="myForm.$invalid">提交</button></div>
+    </form>
+</body>
+<script>
+var app = angular.module("app", [])
+    .controller("myCon", ["$scope", function($scope) {
+
+    }])
+    .directive("contenteditable", function() {
+        return {
+            restrict: 'EA',
+            replace: true,
+            scope: {},
+            require: '^ngModel',
+            link: function(scope, element, attrs, ngModel) {
+                // 指定UI的更新方式
+                ngModel.$render = function() {
+                    element.html(ngModel.$viewValue || '');
+                };
+
+                // 监听change事件来开启绑定
+                element.on('blur keyup change', function() {
+                    scope.$apply(read);
+                });
+                read();
+
+                // 将数据写入model
+                function read() {
+                    var html = element.html();
+                    // 当我们清空div时浏览器会留下一个<br>标签
+                    // 如果制定了strip-br属性，那么<br>标签会被清空
+                    if (attrs.stripBr && html == '<br>') {
+                        html = '';
+                    }
+                    ngModel.$setViewValue(html);
+                }
+            }
+        }
+    })
+</script>
+
+</html>

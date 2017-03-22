@@ -1,0 +1,17 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title></title>
+</head>
+<body>
+<input type="text" id="val">
+</body>
+</html>
+<script type="text/javascript">
+	window.onload = function(){
+		var val = document.getElementById('val');
+		val.onkeydown = function(e){
+			alert(e.keyCode);
+		}
+	}
+</script>

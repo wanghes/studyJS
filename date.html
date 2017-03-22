@@ -1,0 +1,167 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <title>日期操作</title>
+</head>
+
+<body>
+    <div id="date"></div>
+    <script type="text/javascript">
+    var date = function(a, s) {
+        var d = s ? new Date(s) : new Date(),
+            f = d.getTime();
+        return ('' + a).replace(/a|A|d|D|F|g|G|h|H|i|I|j|l|L|m|M|n|s|S|t|T|U|w|y|Y|z|Z/g, function(a) {
+            switch (a) {
+                case 'a':
+                    return d.getHours() > 11 ? 'pm' : 'am';
+                case 'A':
+                    return d.getHours() > 11 ? 'PM' : 'AM';
+                case 'd':
+                    return ('0' + d.getDate()).slice(-2);
+                case 'D':
+                    return ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'][d.getDay()];
+                case 'F':
+                    return ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'][d.getMonth()];
+                case 'g':
+                    return (s = (d.getHours() || 12)) > 12 ? s - 12 : s;
+                case 'G':
+                    return d.getHours();
+                case 'h':
+                    return ('0' + ((s = d.getHours() || 12) > 12 ? s - 12 : s)).slice(-2);
+                case 'H':
+                    return ('0' + d.getHours()).slice(-2);
+                case 'i':
+                    return ('0' + d.getMinutes()).slice(-2);
+                case 'I':
+                    return (function() {
+                        d.setDate(1);
+                        d.setMonth(0);
+                        s = [d.getTimezoneOffset()];
+                        d.setMonth(6);
+                        s[1] = d.getTimezoneOffset();
+                        d.setTime(f);
+                        return s[0] == s[1] ? 0 : 1;
+                    })();
+                case 'j':
+                    return d.getDate();
+                case 'l':
+                    return ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'][d.getDay()];
+                case 'L':
+                    return (s = d.getFullYear()) % 4 == 0 && (s % 100 != 0 || s % 400 == 0) ? 1 : 0;
+                case 'm':
+                    return ('0' + (d.getMonth() + 1)).slice(-2);
+                case 'M':
+                    return ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'][d.getMonth()];
+                case 'n':
+                    return d.getMonth() + 1;
+                case 's':
+                    return ('0' + d.getSeconds()).slice(-2);
+                case 'S':
+                    return ['th', 'st', 'nd', 'rd'][(s = d.getDate()) < 4 ? s : 0];
+                case 't':
+                    return (function() {
+                        d.setDate(32);
+                        s = 32 - d.getDate();
+                        d.setTime(f);
+                        return s;
+                    })();
+                case 'T':
+                    return 'UTC';
+                case 'U':
+                    return ('' + f).slice(0, -3);
+                case 'w':
+                    return d.getDay();
+                case 'y':
+                    return ('' + d.getFullYear()).slice(-2);
+                case 'Y':
+                    return d.getFullYear();
+                case 'z':
+                    return (function() {
+                        d.setMonth(0);
+                        return d.setTime(f - d.setDate(1)) / 86400000;
+                    })();
+                default:
+                    return -d.getTimezoneOffset() * 60;
+            };
+        });
+
+    };
+
+    window.onload = function(){
+        var data = date('Y') + '-' + date('m') + '-' + date('d') + ' ' + date('h') + ':' + date('i') + ':' + date('s');
+        document.getElementById('date').innerHTML = data;
+    }
+
+
+
+    /*
+     * 函数名称: DateUtil
+     * 作 者: yithcn
+     * 功能说明: 日期函数
+     * 使用说明:
+     * 创建日期: 2010.10.14
+     */
+    var DateUtil = {};
+    DateUtil.base = 60 * 60 * 24 * 1000;
+    DateUtil.Add = function(num, sDate) {
+        num = num || 0;
+        sDate = sDate || new Date();
+        var base = this.base * num;
+        var todayMs = sDate.getTime();
+        todayMs += base;
+        sDate.setTime(todayMs);
+        var m = (sDate.getMonth() + 1);
+        m = m < 10 ? "0" + m : m;
+        var d = sDate.getDate();
+        d = d < 10 ? "0" + d : d;
+        var y = sDate.getFullYear();
+        return m + "/" + d + "/" + y;
+    };
+    DateUtil.Diff = function(sDate, eDate, mode) {
+        if (typeof sDate == "string")
+            sDate = new Date(sDate);
+        if (typeof eDate == "string")
+            eDate = new Date(eDate);
+        sDate = sDate || new Date();
+        eDate = eDate || new Date();
+        try {
+            sDate.getYear();
+        } catch (e) {
+            return (0);
+        }
+        var result = Math.abs(eDate - sDate);
+        switch (mode) {
+            case "y":
+                result /= this.base * 365;
+                break;
+            case "m":
+                result /= this.base * 365 / 12;
+                break;
+            case "w":
+                result /= this.base * 7;
+                break;
+            default:
+                result /= this.base;
+                break;
+        }
+        return (Math.floor(result));
+    };
+    DateUtil.Time = function(hasSec) {
+        var date = new Date();
+        return date.getHours() + ":" + date.getMinutes() + (hasSec ? ":" + date.getSeconds() : "");
+    };
+    DateUtil.TimeSplit = function(hasSec) {
+        var date = new Date();
+        return {
+            Hour: date.getHours(),
+            Minute: date.getMinutes(),
+            Second: (hasSec ? ":" + date.getSeconds() : "")
+        };
+    };
+
+
+    </script>
+</body>
+
+</html>

@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html ng-app="app">
+
+<head>
+    <title>angularjs 远端验证</title>
+    <meta charset="UTF-8">
+    <link rel="stylesheet" type="text/css" href="bootstrap/css/bootstrap.css">
+    <script src="lib/angular.min.js" type="text/javascript"></script>
+    <script src="lib/jquery.js" type="text/javascript"></script>
+    <style type="text/css">
+    .has-feedback.has-error input {
+        border: 1px solid #f00;
+    }
+
+    .has-feedback.has-success input {
+        border: 1px solid #ccc;
+    }
+    </style>
+</head>
+
+<body ng-controller="myCon">
+    <div class="container">
+        <div class="row">
+            <form ng-if="!global.isLogin" ng-submit="subForm(useForm.$valid)" name="useForm" novalidate>
+                <div class="form-group has-feedback" ng-class="{true:'has-success',false:'has-error'}[useForm.username.$valid]">
+                    <input class="form-control" placeholder="用户名" type="text" required ng-model="user.username" name="username" validename/>
+                    <span class="glyphicon glyphicon-ok form-control-feedback" ng-if="useForm.username.$dirty&&useForm.username.$valid"><i class="icon-ok-sign"></i>用户名可用</span>
+                    <span class="glyphicon glyphicon-remove form-control-feedback" ng-if="useForm.username.$dirty&&useForm.username.$invalid"><i class=" icon-minus-sign"></i>用户名不可用</span>
+                </div>
+                <div class="form-group has-feedback" ng-class="{true:'has-success',false:'has-error'}[useForm.password.$dirty&&useForm.password.$valid]">
+                    <input class="form-control" placeholder="密码" type="password" required min-length="8" ng-model="user.password" name="password">
+                    <span class="form-control-feedback" ng-if="useForm.password.$dirty&&useForm.password.$valid"><i class="icon-ok-sign"></i></span>
+                    <span class="glyphicon glyphicon-remove form-control-feedback" ng-if="useForm.password.$dirty&&useForm.password.$invalid"><i class=" icon-minus-sign"></i></span>
+                </div>
+                <button type="submit" ng-disabled="useForm.$invalid" class="btn btn-default btn-block btn-primary">登录</button>
+            </form>
+        </div>
+    </div>
+</body>
+<script type="text/javascript">
+var app = angular.module("app", []).factory("restAPI",function(){
+    return {
+        a:1
+    }
+})
+    .controller("myCon", ["$scope", function($scope) {
+        // $scope.userContent = "Change@qq.com";
+        $scope.global = {
+            isLogin: false
+        };
+
+        $scope.subForm = function(isValidate) {
+            if (!isValidate) return;
+
+        }
+
+        $scope.user = {
+            username:"wang_hes",
+            password:""
+        }
+    }]).directive("validename", function(restAPI) {
+        return {
+            require: 'ngModel',
+            link: function(scope, elem, attrs, ngModel) {
+                ngModel.$parsers.unshift(function(val) {
+                    setTimeout(function() {
+                        if(val=="wang_hes"){
+                            ngModel.$setValidity("validename", true);
+                        }else{
+                            ngModel.$setValidity("validename", false);
+                        }
+
+                    }, 2000);
+
+                    /*restAPI.unameCheck.get({
+                        name: val
+                    }, function(data) {
+                        if (data.msg) {
+                            ngModel.$setValidity("validename", true);
+                        } else {
+                            ngModel.$setValidity("validename", false);
+                        }
+                    });*/
+
+                    return val;
+                });
+            }
+        }
+    });
+</script>
+
+</html>
