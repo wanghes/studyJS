@@ -4,32 +4,179 @@
 <head>
     <title>js 算法</title>
     <meta charset="utf-8">
+    <script type="text/javascript" src="mock.js"></script>
 </head>
 
 <body>
     <script type="text/javascript">
     var arr = [2, 5, 1, 4];
-
+    /*冒泡排序**/
     function bubbleSort(arr) {
         var len = arr.length,
             b, j, i = 0;
         for (; i < len; i++) {
-            console.log(i + '----------------------------------------');
             for (j = 0; j < len; j++) {
                 if (arr[i] < arr[j]) {
                     b = arr[j];
                     arr[j] = arr[i];
                     arr[i] = b;
-                    console.log('arr[i]=' + arr[i]);
-                    console.log('arr[j]=' + arr[j]);
-                    console.log('####');
                 }
-                console.log(arr);
             }
         }
         return arr;
     }
-    console.log(bubbleSort(arr));
+    /*快速排序**/
+    function quickSort(arr) {
+        if(arr.length<=1) {
+            return arr;
+        }
+        let leftArr = [];
+        let rightArr = [];
+        let q = arr[0];
+        for(let i = 1,l=arr.length; i<l; i++) {
+            if(arr[i]>q) {
+                rightArr.push(arr[i]);
+            }else{
+                leftArr.push(arr[i]);
+            }
+        }
+
+        return [].concat(quickSort(leftArr),[q],quickSort(rightArr));
+    }
+    /**选择排序***/
+    function innertionSort(arr){
+        var len = arr.length;
+        var preIndex,current;
+        for(var i =1; i<len; i++){
+            preIndex = i-1;
+            current = arr[i];
+            while(preIndex >= 0 && arr[preIndex]>current){
+                arr[preIndex+1] =  arr[preIndex];
+                preIndex--;
+            }
+            arr[preIndex+1] = current;
+        }
+        return arr
+    }
+    /**选择排序***/
+    function selectionSort(arr) {
+        var len = arr.length;
+        var minIndex, temp;
+        for (var i = 0; i < len - 1; i++) {
+            minIndex = i;
+            for (var j = i + 1; j < len; j++) {
+                if (arr[j] < arr[minIndex]) {     // 寻找最小的数
+                    minIndex = j;                 // 将最小数的索引保存
+                }
+            }
+            temp = arr[i];
+            arr[i] = arr[minIndex];
+            arr[minIndex] = temp;
+        }
+        return arr;
+    }
+
+    /**
+     * [归并排序]
+     * @param  {[Array]} arr   [要排序的数组]
+     * @param  {[String]} prop  [排序字段，用于数组成员是对象时，按照其某个属性进行排序，简单数组直接排序忽略此参数]
+     * @param  {[String]} order [排序方式 省略或asc为升序 否则降序]
+     * @return {[Array]}       [排序后数组，新数组，并非在原数组上的修改]
+     */
+    var mergeSort = (function() {
+        // 合并
+        var _merge = function(left, right, prop) {
+            var result = [];
+
+            // 对数组内成员的某个属性排序
+            if (prop) {
+                while (left.length && right.length) {
+                    if (left[0][prop] <= right[0][prop]) {
+                        result.push(left.shift());
+                    } else {
+                        result.push(right.shift());
+                    }
+                }
+            } else {
+                // 数组成员直接排序
+                while (left.length && right.length) {
+                    if (left[0] <= right[0]) {
+                        result.push(left.shift());
+                    } else {
+                        result.push(right.shift());
+                    }
+                }
+            }
+
+            while (left.length)
+                result.push(left.shift());
+
+            while (right.length)
+                result.push(right.shift());
+
+            return result;
+        };
+
+        var _mergeSort = function(arr, prop) { // 采用自上而下的递归方法
+            var len = arr.length;
+            if (len < 2) {
+                return arr;
+            }
+            var middle = Math.floor(len / 2),
+                left = arr.slice(0, middle),
+                right = arr.slice(middle);
+            return _merge(_mergeSort(left, prop), _mergeSort(right, prop), prop);
+        };
+
+        return function(arr, prop, order) {
+            var result = _mergeSort(arr, prop);
+            if (!order || order.toLowerCase() === 'asc') {
+                // 升序
+                return result;
+            } else {
+                // 降序
+                var _ = [];
+                result.forEach(function(item) {
+                    _.unshift(item);
+                });
+                return _;
+            }
+        };
+    })();
+
+    var getData = function() {
+        return Mock.mock({
+            "list|10000": [{
+                name: '@cname',
+                age: '@integer(0,500)'
+            }]
+        }).list;
+    };
+
+    var arr = [1, 13, 24, 11, 14, 2, 6, 7, 10, 23,56,72,56,12,45,23,16,114,48];
+    /*var arr = getData();*/
+    /*
+    console.time('冒泡排序'); bubbleSort(arr);console.timeEnd('冒泡排序');
+    console.time('快速排序'); quickSort(arr);console.timeEnd('快速排序');
+    console.time('选择排序'); selectionSort(arr);console.timeEnd('选择排序');
+    console.time('插入排序'); innertionSort(arr);console.timeEnd('插入排序'); //比较快
+    console.time('归并排序'); mergeSort(arr);console.timeEnd('归并排序');
+    */
+
+
+    /** 随机生成指定长度的字符串 **/
+    function randomString(n) {
+      let str = 'abcdefghijklmnopqrstuvwxyz9876543210';
+      let tmp = '',
+          i = 0,
+          l = str.length;
+      for (i = 0; i < n; i++) {
+        tmp += str.charAt(Math.floor(Math.random() * l));
+      }
+      return tmp;
+    }
+
+
 
     function rondomColors() {
         var arr = ["0", "1", "2", "3", "4", "5", "6", "7", "8", "9", "a", "b", "c", "d", "e", "f"];
@@ -43,6 +190,35 @@
     }
     console.log(rondomColors());
 
+
+    /**
+     * *统计一个字符串出现最多的字母 给出一段英文连续的英文字符窜，找出重复出现次数最多的字母
+     * @param  {[type]} str [description]
+     * @return {[type]}     [description]
+     *  输入afjghdfraaaasdenas
+     */
+    function findMaxDuplicateChar(str) {
+      if(str.length == 1) {
+        return str;
+      }
+      let charObj = {};
+      for(let i=0;i<str.length;i++) {
+        if(!charObj[str.charAt(i)]) {
+          charObj[str.charAt(i)] = 1;
+        }else{
+          charObj[str.charAt(i)] += 1;
+        }
+      }
+      let maxChar = '',
+          maxValue = 1;
+      for(var k in charObj) {
+        if(charObj[k] >= maxValue) {
+          maxChar = k;
+          maxValue = charObj[k];
+        }
+      }
+      return maxChar;
+    }
 
     function GetBytes(str) {
         console.log(str);

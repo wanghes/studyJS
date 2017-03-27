@@ -26,7 +26,6 @@
 
 	/*1. 删除后面重复的：*/
 	function ov1(arr){
-	  	var a1=((new Date).getTime());
 	  	for(var i=0;i<arr.length;i++){
 		    for(var j=i+1;j<arr.length;j++){
 		        if(arr[i]===arr[j]){
@@ -36,8 +35,6 @@
 		    }
 		}
 
-	  	console.info((new Date).getTime()-a1);
-	  	console.log(arr)
 	  	return arr.sort(function(a,b){
 	  		return a-b;
 	  	});
@@ -46,7 +43,6 @@
 
 	/*2. 这个是常规的方法，比较好理解，如果相同则跳出循环*/
 	function ov2(a) {
-	  	var a1=((new Date).getTime());
 	  	var b = [], n = a.length, i, j;
 	  	for (i = 0; i < n; i++) {
 	    	for (j = i + 1; j < n; j++){
@@ -56,8 +52,6 @@
 	      	}
 	    	if(j)b.push(a[i]);
 	    }
-	  	console.info((new Date).getTime()-a1);
-	  	console.log(b)
 	  	return b.sort(function(a,b){
 	  		return a-b
 	  	});
@@ -65,7 +59,6 @@
 
 	/*3. 这个我花了好长时间明白的，这里j循环虽然继续了，但是i值已经改变了。就等于是一个新的i循环：*/
 	function ov3(a) {
-	   	var a1=((new Date).getTime());
 	  	var b = [], n = a.length, i, j;
 	  	for (i = 0; i < n; i++) {
 	    	for (j = i + 1; j < n; j++){
@@ -73,14 +66,11 @@
 	    	}
 	  		b.push(a[i]);
 		}
-	  	console.info((new Date).getTime()-a1);
-	  	console.log(b)
 	  	return b.sort(function(a,b){return a-b});
 	}
 
 	/*4. 保证新数组中的都是唯一的*/
 	function ov4(ar){
-		var a1=((new Date).getTime());
 	  	var m=[],f;
 	  	for(var i=0;i<ar.length;i++){
 	  		f=true;
@@ -89,28 +79,23 @@
 	  		}
 	  		if(f)m.push(ar[i])
 	  	}
-	    console.info((new Date).getTime()-a1);
-	    console.log(m);
 	  	return m.sort(function(a,b){return a-b});
 	}
 
 	/*5. 用对象属性*/
 	function ov5(ar){
-		var a1=(new Date).getTime();
         var m,n=[],o= {};
         for (var i=0;(m= ar[i])!==undefined;i++){
         	if (!o[m]){
         		n.push(m);o[m]=true;
         	}
         }
-    	console.info((new Date).getTime()-a1);
-    	console.log(n);
     	return n.sort(function(a,b){return a-b});;
     }
 
-    ov1(arr1);
-    ov2(arr2);
-    ov3(arr3);
-    ov4(arr4);
-    ov5(arr5);
+    console.time('ov1'); ov1(arr1);console.timeEnd('ov1');
+    console.time('ov2'); ov1(arr2);console.timeEnd('ov2');
+     console.time('ov3'); ov1(arr3);console.timeEnd('ov3');
+     console.time('ov4'); ov1(arr4);console.timeEnd('ov4');
+     console.time('ov5'); ov1(arr5);console.timeEnd('ov5');
 </script>
