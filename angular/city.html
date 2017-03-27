@@ -1,0 +1,130 @@
+<!DOCTYPE html>
+<html ng-app="app">
+<head>
+    <title>city</title>
+    <script src="lib/angular.min.js" type="text/javascript"></script>
+    <script src="lib/jquery.js" type="text/javascript"></script>
+    <script src="lib/city.js" type="text/javascript"></script>
+</head>
+<body ng-controller="main">
+<ui-city></ui-city>
+</body>
+<script type="text/javascript">
+    var directiveApp = angular.module('app.directive',[]);
+    directiveApp.directive("uiCity",function($timeout,$sce){
+        return {
+            restrict: 'E',
+            replace: true,
+            template:'<div class="cityChecks" ng-bind-html="trustAsHtml(generateProvinceCity(city,field))"></div>',
+            link:function(scope,elem,attrs,ctrl){
+                scope.trustAsHtml = $sce.trustAsHtml;
+                 $timeout(function() {
+                    scope.city = city;
+                    scope.field = {
+                        level:3,
+                        id:"cityNode",
+                        field_name:"city"
+                    };
+                    scope.trustAsHtml = $sce.trustAsHtml;
+                    scope.generateProvinceCity = function(city, field) {
+                        let level = field.level,
+                            itemId = field.id,
+                            field_name = field.field_name;
+                        let provinceNodes = ['<select class="ui dropdown" id="'+itemId+'"><option value="" selected disabled>请选择省份</option>'],
+                            cityNodes = [],
+                            areaNodes = [];
+
+                        angular.forEach(city, function(item) {
+                            provinceNodes.push('<option value="'+item.code+'">'+item.name+'</option>');
+                        });
+                        provinceNodes.push('</select>');
+                        provinceNodes = provinceNodes.join('');
+
+                        $('body').on('change', '#' + itemId, function() {
+                            let provinceCode = $(this).val();
+                            let provinceName = $(this).children('option:selected').text();
+
+                            $('input[name="'+field_name+'"]').val(provinceCode + ":" + provinceName);
+                            if(level==2){
+                                 angular.forEach(city, function(item) {
+                                    let str = '<option value="" selected disabled>请选择城市</option>';
+                                    if (item.code == provinceCode) {
+                                        angular.forEach(item.sub, function(cityItem) {
+                                            str += '<option value="'+cityItem.code+'">'+cityItem.name+'</option>';
+                                        });
+                                        $('#'+itemId+'Citys').html(str);
+                                    }
+                                })
+
+                            }else if(level==3){
+                                angular.forEach(city, function(item) {
+                                    let str = '<option value="" selected disabled>请选择城市</option>';
+                                    let str2 = '<option value="" selected disabled>请选择地区</option>';
+                                    if (item.code == provinceCode) {
+                                        angular.forEach(item.sub, function(cityItem) {
+                                            str += '<option value="'+cityItem.code+'">'+cityItem.name+'</option>';
+                                        });
+                                        $('#'+itemId+'Citys').html(str);
+                                        $('#'+itemId+'Areas').html(str2);
+                                    }
+                                })
+                            }
+
+                        });
+                        $('body').on('change', '#' + itemId + "Citys", function() {
+                            let provinceCode = $('#' + itemId).val();
+                            let provinceName = $('#' + itemId).children('option:selected').text();
+                            let cityCode = $(this).val();
+                            let cityName = $(this).children('option:selected').text();
+                            $('input[name="'+field_name+'""]').val(provinceCode + ':' + provinceName + '-' + cityCode + ":" + cityName);
+
+                            angular.forEach(city, function(item) {
+                                if (item.code == provinceCode) {
+                                    angular.forEach(item.sub, function(cityItem) {
+                                        let str = '<option value="" selected disabled>请选择地区</option>';
+                                        if (cityItem.code == cityCode) {
+                                            angular.forEach(cityItem.sub, function(areaItem) {
+                                                str += '<option value="'+areaItem.code+'">'+areaItem.name+'</option>';
+                                            });
+                                            $('#'+itemId+'Areas').html(str);
+                                        }
+                                    });
+                                }
+                            })
+                        });
+
+                        $('body').on('change', '#' + itemId + "Areas", function() {
+                            let provinceCode = $('#' + itemId).val();
+                            let provinceName = $('#' + itemId).children('option:selected').text();
+                            let cityCode = $('#' + itemId + "Citys").val();
+                            let cityName = $('#' + itemId + "Citys").children('option:selected').text();
+                            let areaCode = $(this).val();
+                            let areaName = $(this).children('option:selected').text();
+                            $('input[name="'+field_name+'"]').val(provinceCode + ':' + provinceName + '-' + cityCode + ":" + cityName + '-' + areaCode + ":" + areaName);
+                        })
+
+                        if (level == 1 || !level) {
+                            return provinceNodes;
+                        }
+                        if (level == 2) {
+                            cityNodes = '<select class="ui dropdown" id="'+itemId+'Citys"><option value="" selected disabled>请选择城市</option></select>';
+                            return provinceNodes + cityNodes;
+                        }
+                        if (level == 3) {
+                            cityNodes = '<select class="ui dropdown" id="'+itemId+'Citys"><option value="" selected disabled>请选择城市</option></select>';
+                            areaNodes = '<select class="ui dropdown" id="'+itemId+'Areas"><option value="" selected disabled>请选择地区</option></select>';
+                            return provinceNodes + cityNodes + areaNodes;
+                        }
+                    }
+
+                }, 0);
+            }
+        }
+    })
+    var app = angular.module('app',['app.directive']);
+    app.controller('main',function($scope){
+
+    });
+
+</script>
+</html>
