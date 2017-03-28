@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>gulp-nodemon-test实现一个增删改查的demo</title>
+    <meta charset="utf-8">
+    <link rel="stylesheet" type="text/css" href="style/index.css">
+    <script type="text/javascript">
+        window.onload = function(){
+
+        }
+
+        function ajaxGet(url,callback){
+            var ajaxObj = new XMLHttpRequest();
+            ajaxObj.open('get',url,true);
+            ajaxObj.send();
+            ajaxObj.onreadystatechange = function(){
+                if(ajaxObj.readyState==4 && ajaxObj.status==200){
+                    if(!!callback && typeof callback == 'function'){
+                        callback(ajaxObj.responseText);
+                    }
+                }
+            }
+        }
+         function ajaxPost(url,data,callback){
+            var ajaxObj = new XMLHttpRequest();
+            ajaxObj.open('post',url,true);
+            ajaxObj.setRequestHeader("Content-Type","application/json");
+            ajaxObj.send(data);
+
+            ajaxObj.onreadystatechange = function(){
+                if(ajaxObj.readyState==4 && ajaxObj.status==200){
+                    if(!!callback && typeof callback == 'function'){
+                        callback(ajaxObj.responseText);
+                    }
+                }
+            }
+        }
+
+        function ajaxDelete(url,callback){
+            var ajaxObj = new XMLHttpRequest();
+            ajaxObj.open('delete',url,true);
+            ajaxObj.send();
+
+            ajaxObj.onreadystatechange = function(){
+                if(ajaxObj.readyState==4 && ajaxObj.status==200){
+                    if(!!callback && typeof callback == 'function'){
+                        callback(ajaxObj.responseText);
+                    }
+                }
+            }
+        }
+
+        function ajaxPut(url,data,callback){
+            var ajaxObj = new XMLHttpRequest();
+            ajaxObj.open('put',url,true);
+            ajaxObj.setRequestHeader("Content-Type","application/json");
+            ajaxObj.send(data);
+
+            ajaxObj.onreadystatechange = function(){
+                if(ajaxObj.readyState==4 && ajaxObj.status==200){
+                    if(!!callback && typeof callback == 'function'){
+                        callback(ajaxObj.responseText);
+                    }
+                }
+            }
+        }
+
+        function fetchData(){
+            ajaxGet('/getData',function(data){
+                console.log(data);
+            })
+        }
+
+        function postData(){
+            ajaxPost('/postData','{"name":"付明乐"}',function(data){
+                console.log(data);
+            })
+        }
+
+        function deleteData(){
+            ajaxDelete('/delete/王海松',function(data){
+                console.log(data);
+            });
+        }
+
+        function putData(){
+            var title = {title:"我先修改一个测试"};
+            ajaxPut('/update/2',JSON.stringify(title),function(data){
+                console.log(data);
+            });
+        }
+
+    </script>
+</head>
+<body>
+<button id="fetchButton" onclick="fetchData()">获取列表中的数据</button>
+<button id="postButton" onclick="postData()">表单提交一个post数据</button>
+<button id="deleteButton" onclick="deleteData()">delete数据</button>
+<button id="putButton" onclick="putData()">update数据</button>
+<h1>这会是一个测试</h1>
+</body>
+</html>

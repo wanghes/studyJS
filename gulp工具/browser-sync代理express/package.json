@@ -1,0 +1,23 @@
+{
+  "name": "browser-sync-proxy-express",
+  "version": "1.0.0",
+  "description": "no",
+  "main": "index.js",
+  "scripts": {
+    "test": "gulp"
+  },
+  "repository": {
+    "type": "git",
+    "url": "no"
+  },
+  "keywords": [
+    "no"
+  ],
+  "author": "wang_hes",
+  "license": "MIT",
+  "dependencies": {
+    "browser-sync": "^2.18.8",
+    "express": "^4.15.2",
+    "gulp-nodemon": "^2.2.1"
+  }
+}

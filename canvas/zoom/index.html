@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html>
+<head lang="en">
+    <meta charset="UTF-8">
+    <title>zoom</title>
+    <link href="css/bootstrap.css" rel="stylesheet" charset="utf-8">
+    <link href="css/jquery.artZoom.css" rel="stylesheet" charset="utf-8">
+</head>
+<body>
+<div class="container-fluid">
+    <div class="row">
+        <div class="col-lg-12">
+            <!--<div id="picView">-->
+                <!--<img class="artZoom"  src="images/1.jpg">-->
+            <!--</div>-->
+        </div>
+        <div class="col-lg-12">
+            <a href="#" class="btn btn-primary" data-toggle="modal"  onclick="pop_pic_modal('images/1.jpg')">模态1</a>
+        </div>
+        <div class="col-lg-12">
+            <a href="#" class="btn btn-primary" data-toggle="modal"  onclick="pop_pic_modal('images/2.jpg')">模态2</a>
+        </div>
+    </div>
+</div>
+<div class="modal fade" id="myModal">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">关闭</span></button>
+                <h4 class="modal-title" id="myModalLabel">显示</h4>
+            </div>
+            <div class="modal-body">
+                <div id="picView">
+                    <img class="artZoom" id="artZoom" src="">
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default" data-dismiss="modal">关闭</button>
+            </div>
+        </div>
+    </div>
+</div>
+</body>
+<script src="js/jquery.js"></script>
+<script src="js/bootstrap.js"></script>
+<script src="js/jquery.artZoom.js"></script>
+<script type="text/javascript">
+    function pop_pic_modal(url){
+        $('#myModal').modal('show');
+        $('#picView').html('<img class="artZoom" id="artZoom" src="">');
+        $('#artZoom').attr('src',url);
+        $('.artZoom').artZoom({
+            path: './images',	// 设置artZoom图片文件夹路径
+            preload: true,		// 设置是否提前缓存视野内的大图片
+            blur: true,			// 设置加载大图是否有模糊变清晰的效果
+            // 语言设置
+            // maxWidth: 600,
+            maxWidth: 568,
+            origin:'启动放大镜',
+            left: '左旋转',		// 左旋转按钮文字
+            right: '右旋转',		// 右旋转按钮文字
+            source: '看原图'		// 查看原图按钮文字
+        });
+    }
+    $(function(){
+        $('#myModal').on('hide.bs.modal', function (e) {
+            $('#picView').html('');
+        });
+    });
+
+//    $(function(){
+//        $('.artZoom').artZoom({
+//            path: './images',	// 设置artZoom图片文件夹路径
+//            preload: true,		// 设置是否提前缓存视野内的大图片
+//            blur: true,			// 设置加载大图是否有模糊变清晰的效果
+//            // 语言设置
+//           // maxWidth: 600,
+//            maxWidth: 568,
+//            origin:'放大镜',
+//            left: '左旋转',		// 左旋转按钮文字
+//            right: '右旋转',		// 右旋转按钮文字
+//            source: '看原图'		// 查看原图按钮文字
+//        });
+//    });
+</script>
+</html>
