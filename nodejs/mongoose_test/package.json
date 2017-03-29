@@ -1,0 +1,23 @@
+{
+  "name": "mongoose_test",
+  "version": "1.0.0",
+  "description": "no",
+  "main": "index.js",
+  "scripts": {
+    "test": "supervisor app.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "no "
+  },
+  "keywords": [
+    "no"
+  ],
+  "author": "wanghes",
+  "license": "ISC",
+  "dependencies": {
+    "bluebird": "^3.5.0",
+    "express": "^4.15.2",
+    "mongoose": "^4.9.2"
+  }
+}

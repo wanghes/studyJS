@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="utf-8" />
+    <title>File Upload</title>
+    <script type="text/javascript" src="jquery-2.0.2.js"></script>
+    <style type="text/css">
+    .btn {
+        display: block;
+        height: 32px;
+        width: 100px;
+        background: #000;
+        text-decoration: none;
+        color: #fff;
+        text-align: center;
+        line-height: 32px;
+        margin: 10px 0;
+    }
+    
+    #list a {
+        display: inline-block;
+        border: 1px solid #dfdfdf;
+        padding: 5px;
+        border-radius: 3px;
+        transition: all .3s linear;
+        margin: 0 5px;
+    }
+    
+    #list a:first-child {
+        margin-left: 0;
+    }
+    
+    #list a:last-child {
+        margin-right: 0;
+    }
+    
+    #list a:hover {
+        box-shadow: 0 3px 7px #666;
+    }
+    </style>
+</head>
+
+<body>
+    <div class="container">
+        <form name="fileinfo">
+            <input type="file" name="file" required />
+        </form>
+        <a class="btn" style="" href="javascript:upload()">上传图片</a>
+    </div>
+    <div id="list">
+    </div>
+    <script type="text/javascript" charset="utf-8">
+    function upload() {
+        var oData = new FormData(document.forms.namedItem("fileinfo"));
+        oData.append("CustomField", "This is some extra data");
+        var xhr = new XMLHttpRequest()
+        xhr.open("POST", "upload.php", true);
+        xhr.onload = function(event) {
+            if (xhr.status == 200) {
+                if (xhr.responseText) {
+                    alert(xhr.responseText);
+                    location.reload();
+                }
+            }
+        };
+        xhr.send(oData);
+    }
+
+    $(function() {
+        $("#list").load("list.php?random=" + (new Date).getTime());
+    })
+    </script>
+</body>
+
+</html>
