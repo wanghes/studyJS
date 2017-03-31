@@ -6,26 +6,28 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width">
     <style type="text/css">
-    *{
-        margin:0;
-        padding:0;
-        border:none;
+    * {
+        margin: 0;
+        padding: 0;
+        border: none;
     }
-    html{
-      height: 100%;
-      font-size:10px;
+
+    html {
+        height: 100%;
+        font-size: 10px;
     }
-    body{
-      height:100%;
+
+    body {
+        height: 100%;
     }
+
     #box {
         margin-top: 0;
         width: 100%;
     }
 
     #loading,
-    #refresh
-    {
+    #refresh {
         width: 100%;
         height: 70px;
         background: #fff;
@@ -36,14 +38,15 @@
         height: 50px;
         background: #000;
     }
-    #refresh .refresh{
-        line-height:50px;
-        text-align:center;
-        color:#fff;
-        font-size:1.6rem;
+
+    #refresh .refresh {
+        line-height: 50px;
+        text-align: center;
+        color: #fff;
+        font-size: 1.6rem;
     }
 
-    #loading .loading{
+    #loading .loading {
         margin: 20px auto;
         padding-top: 8px;
         text-align: center;
@@ -51,28 +54,32 @@
         color: #fff;
         background: #fff;
     }
-    .list{
+
+    .list {
         list-style: none;
     }
-    .list li{
-        width:100%;
-        padding:15px;
-        height:110px;
+
+    .list li {
+        width: 100%;
+        padding: 15px;
+        height: 110px;
         display: -webkit-box;
         border-bottom: 1px solid #ccc;
         box-sizing: border-box;
     }
-    .list img{
-        width:80px;
-        height:80px;
-        margin-right:.8rem;
+
+    .list img {
+        width: 80px;
+        height: 80px;
+        margin-right: .8rem;
     }
-    .list span{
+
+    .list span {
         height: 80px;
         -webkit-box-flex: 1;
         line-height: 24px;
         font-size: 1.6rem;
-        display:block;
+        display: block;
     }
     </style>
 </head>
@@ -95,6 +102,7 @@ var pageSize = 4;
 var page = 1;
 var html = '';
 var curPage = 0;
+
 function ajax(obj) {
     let xhr = new XMLHttpRequest();
     xhr.timeout = obj.timeout;
@@ -116,6 +124,7 @@ function ajax(obj) {
         }
     }
 }
+
 function ajaxGet() {
     var params = '?pageSize=' + pageSize + '&page=' + page;
     var xhr = ajax({
@@ -125,12 +134,12 @@ function ajaxGet() {
             var values = data;
             var list = document.querySelector('.list');
 
-            values.forEach(function(value){
+            values.forEach(function(value) {
                 var li = '<li><img src="' + value.pic + '"><span>' + value.title + '</span></li>';
                 html += li;
             });
 
-            if(values.length && !values.length < pageSize){
+            if (values.length && !values.length < pageSize) {
                 page++;
             }
 
@@ -139,6 +148,7 @@ function ajaxGet() {
     });
 }
 ajaxGet();
+
 function getDataByPage() {
     var btn = document.querySelector('#loadMore');
     var params = '?pageSize=' + pageSize + '&page=' + page;
@@ -150,11 +160,11 @@ function getDataByPage() {
             var values = data;
             var list = document.querySelector('.list');
 
-            values.forEach(function(value){
+            values.forEach(function(value) {
                 var li = '<li><img src="' + value.pic + '"><span>' + value.title + '</span></li>';
                 html += li;
             });
-            if(values.length && !values.length < pageSize){
+            if (values.length && !values.length < pageSize) {
                 page++;
             }
 
@@ -188,9 +198,9 @@ function slideDownStep3() {
 }
 
 function getReplyList(curpage) {
-    if(!curPage){
+    if (!curPage) {
         curPage = 0;
-     }
+    }
     // console.log(curPage)
 }
 
@@ -225,9 +235,9 @@ function kt_touch(contentId, way) {
             _end = (_start - touch.pageY);
             if (_end < 0) {
                 slideDownStep1(_end);
-                setTimeout(function(){
+                setTimeout(function() {
                     location.reload();
-                },2000);
+                }, 2000);
 
             }
         }

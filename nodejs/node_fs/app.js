@@ -8,6 +8,7 @@ var app = http.createServer(function(req, res) {
             res.write(error.toString());
         } else {
             res.writeHead(200, { 'Content-Type': 'text/html' });
+            console.log(data)
             res.write(data);
         }
         res.end();

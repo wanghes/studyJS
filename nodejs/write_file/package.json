@@ -1,0 +1,23 @@
+{
+  "name": "write_file",
+  "version": "1.0.0",
+  "description": "no",
+  "main": "no",
+  "scripts": {
+    "test": "supervisor app.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "no"
+  },
+  "keywords": [
+    "no"
+  ],
+  "author": "wanghes",
+  "license": "ISC",
+  "dependencies": {
+    "async": "^2.2.0",
+    "body-parser": "^1.17.1",
+    "express": "^4.15.2"
+  }
+}
