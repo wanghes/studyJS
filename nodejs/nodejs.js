@@ -25,7 +25,6 @@ process.stdout.write('end');
 
 console.log(process.argv);
 console.log(process.execPath);
-//console.log(process.env);
 console.log(process.cwd());
 
 /*process.on('uncaughtException', function (err) {

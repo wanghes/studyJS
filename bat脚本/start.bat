@@ -1,0 +1,1 @@
+find ./ -name '*.less' -exec lessc -x {} \\; > ./output.css
