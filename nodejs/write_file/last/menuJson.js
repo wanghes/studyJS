@@ -39,7 +39,7 @@ let menu = [
             { secondTitle: '角色创建html模板', id: 'tab_11', url: './modules/aaaa.html', icon: 'users' },
 { secondTitle: 'naem232', id: 'tab_13', url: './modules/naem222.html', icon: 'users' },
 { secondTitle: 'dasda', id: 'tab_13', url: './modules/naem21112.html', icon: 'users' },
-{ secondTitle: '非死不可', id: 'tab_13', url: './modules/fb.html', icon: 'users' }
+{ secondTitle: '非死不1111可', id: 'tab_13', url: './modules/fb.html', icon: 'users' }
         ]
     }]
 ];

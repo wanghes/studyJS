@@ -1,0 +1,20 @@
+{
+  "name": "nodejs_captchapng",
+  "version": "1.0.0",
+  "description": "captcha",
+  "main": "index.js",
+  "scripts": {
+    "test": "node load.js"
+  },
+  "repository":"no",
+  "keywords": [
+    "captcha"
+  ],
+  "author": "wang_hes",
+  "license": "ISC",
+  "dependencies": {
+    "captchapng": "0.0.1",
+    "express": "^4.14.0",
+    "express-session": "^1.14.2"
+  }
+}

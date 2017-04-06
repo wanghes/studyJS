@@ -177,7 +177,7 @@ export default function() {
             isLinstener: false,
             isMulti: false,
             action: {
-                open: "modal",
+                open: "push",
                 id: "#sidebarBox"
             },
             disabled: false

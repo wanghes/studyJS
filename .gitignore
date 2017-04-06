@@ -3,5 +3,7 @@ nodejs/bluebird_test/node_modules
 nodejs/mongoose_test/node_modules
 nodejs/write_file/node_modules
 nodejs/svg-captcha-test/node_modules
+nodejs/node_busboy/node_modules
+nodejs/nodejs_capthca/node_modules
 gulp工具/gulp-nodemon-test/node_modules
 gulp工具/browser-sync代理express/node_modules

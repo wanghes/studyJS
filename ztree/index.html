@@ -28,74 +28,88 @@
     var zNodes = [{
         id: 1,
         pId: 0,
-        name: "随意勾选 1",
+        name: "体育器械",
         open: true
     }, {
         id: 11,
         pId: 1,
-        name: "随意勾选 1-1",
-        open: true
+        name: "球类",
+        open: false
     }, {
         id: 111,
         pId: 11,
-        name: "disabled 1-1-1",
+        name: "足球",
         chkDisabled: true
     }, {
         id: 112,
         pId: 11,
-        name: "随意勾选 1-1-2",
+        name: "篮球",
         chkDisabled: false,
         checked: false,
         open: true
     }, {
         id: 12,
         pId: 1,
-        name: "disabled 1-2",
+        name: "举重器材",
         chkDisabled: true,
         checked: false,
         open: true
     }, {
         id: 121,
         pId: 12,
-        name: "disabled 1-2-1",
+        name: "杠铃",
         chkDisabled: false,
         checked: false,
         open: true
     }, {
         id: 122,
         pId: 12,
-        name: "disabled 1-2-2",
+        name: "哑铃",
         chkDisabled: false,
         checked: false,
         open: true
     }, {
         id: 2,
         pId: 0,
-        name: "随意勾选 2",
+        name: "动物种类",
         checked: true,
         open: true
     }, {
         id: 21,
         pId: 2,
-        name: "随意勾选 2-1"
+        name: "猫科"
     }, {
+        id: 211,
+        pId: 21,
+        name: "花豹",
+        checked: true
+    },{
+        id: 212,
+        pId: 21,
+        name: "美洲虎",
+        checked: true
+    },{
         id: 22,
         pId: 2,
-        name: "随意勾选 2-2",
+        name: "犬科",
         open: true
     }, {
         id: 221,
         pId: 22,
-        name: "随意勾选 2-2-1",
+        name: "鬣狗",
         checked: true
     }, {
         id: 222,
         pId: 22,
-        name: "随意勾选 2-2-2"
+        name: "狼"
     }, {
         id: 23,
         pId: 2,
-        name: "随意勾选 2-3"
+        name: "啮齿类"
+    },{
+        id: 231,
+        pId: 23,
+        name: "仓鼠"
     }];
 
     function disabledNode(e) {

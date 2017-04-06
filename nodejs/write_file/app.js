@@ -14,6 +14,7 @@ app.use(express.static(__dirname + '/view'));
 app.get('/home', function(req, res) {
     res.send('home');
 });
+//创建页面，并创建相关的js控制器，并添加控制器引用到main.js入口文件
 app.post('/createPage', function(req, res) {
     var body = req.body;
     var page = body.page;
@@ -108,7 +109,7 @@ app.post('/createPage', function(req, res) {
 
 });
 
-
+//显示menuJson.js文件内容到textara文本域
 app.get('/menu', function(req, res) {
     async.waterfall([
         function(callback) {
@@ -120,7 +121,7 @@ app.get('/menu', function(req, res) {
         res.send(result);
     });
 });
-
+//修该文本域的menuJson.js内容
 app.post('/addMenu', function(req, res) {
     var json = req.body.json;
     async.waterfall([function(callback) {
@@ -140,7 +141,7 @@ app.post('/addMenu', function(req, res) {
 
 
 });
-
+//单独创建控制器
 app.post('/createCtrl', function(req, res) {
     var body = req.body;
 

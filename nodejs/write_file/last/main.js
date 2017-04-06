@@ -22,6 +22,7 @@ import fbCtrl from './pages/fbCtrl';
 import localhostCtrl from './pages/localhostCtrl';
 import ewewCtrl from './pages/ewewCtrl';
 import dfgCtrl from './pages/dfgCtrl';
+import wangCtrl from './pages/wangCtrl';
 //#import
 //注意上面是自动化文件插入位置
 
@@ -52,6 +53,7 @@ import dfgCtrl from './pages/dfgCtrl';
     localhostCtrl();
 ewewCtrl();
 dfgCtrl();
+wangCtrl();
 //#insert
 //注意上面是自动化文件插入位置
 

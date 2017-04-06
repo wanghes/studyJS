@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title>postmessage</title>
+    <meta charset="utf-8">
+</head>
+
+<body>
+    <div style="width:200px; float:left; margin-right:200px;border:solid 1px #333;">
+        <div id="color">Frame Color</div>
+    </div>
+    <div>
+        <iframe id="child" src="http://localhost:3200/index.html"></iframe>
+    </div>
+</body>
+<script type="text/javascript">
+         window.onload=function(){
+             window.frames[0].postMessage('getcolor','http://localhost:3200');
+         }
+
+         window.addEventListener('message',function(e){
+             var color=e.data;
+             document.getElementById('color').style.backgroundColor=color;
+         },false);
+     </script>
+</html>
