@@ -1,14 +1,14 @@
 {
-  "name": "mongoose_test",
+  "name": "node_request",
   "version": "1.0.0",
-  "description": "no",
+  "description": "",
   "main": "index.js",
   "scripts": {
     "test": "supervisor app.js"
   },
   "repository": {
     "type": "git",
-    "url": "no "
+    "url": "no"
   },
   "keywords": [
     "no"
@@ -16,11 +16,8 @@
   "author": "wanghes",
   "license": "ISC",
   "dependencies": {
-    "bluebird": "^3.5.0",
     "express": "^4.15.2",
-    "mongoose": "^4.9.2"
-  },
-  "devDependencies": {
-    "cors": "^2.8.3"
+    "jquery": "^3.2.1",
+    "request": "^2.81.0"
   }
 }

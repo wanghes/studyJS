@@ -1,0 +1,1 @@
+var flander=require("./flander"),add=require("./add");flander.dWrite(),add.isArray();

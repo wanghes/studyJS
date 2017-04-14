@@ -1,6 +1,7 @@
 var express = require('express');
 var mongoose = require('mongoose');
 var bluebird = require('bluebird');
+var cors = require('cors');
 var Kitten;
 var mongoose = require('mongoose');
 mongoose.connect('mongodb://localhost/mege_test', {
@@ -24,7 +25,7 @@ db.once('open', function() {
 });
 
 var app = express();
-
+app.use(cors());
 app.get('/', function(req, res) {
     var silence = new Kitten({ name: 'Silence' });
     silence.save().then(function() {
@@ -36,7 +37,7 @@ app.get('/', function(req, res) {
 
 app.get('/all', function(req, res) {
     var obj = new Kitten({ name: 'test1111' });
-    console.log(Kitten.prototype);
+    //console.log(Kitten.prototype);
     var results = [
         obj.saveAsync(),
         Kitten.findAsync()
