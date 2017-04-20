@@ -12,7 +12,7 @@ styles.fill = {
 
 styles.content3 = {
   ...styles.fill,
-  top: '40px',
+  top: '0',
   textAlign: 'center',
   background:"#666"
 }
