@@ -1,0 +1,38 @@
+@color:red;
+*{
+  margin:0;
+  border:0;
+  padding:0;
+}
+h2{
+  color:@color;
+}
+
+ul#header{
+  height:40px;
+  width:100%;
+  line-height: 40px;
+  display: flex;
+  justify-content: center;
+  list-style: none;
+  li{
+    flex:1;
+    text-align: center;
+    a{
+      text-decoration: none;
+      display: block;
+      font-size:20px;
+      color:#fff;
+      background: #000;
+      border-right:1px solid #fff;
+    }
+  }
+}
+.fade-enter {
+  opacity: 0;
+  z-index: 1;
+}
+.fade-enter.fade-enter-active {
+  opacity: 1;
+  transition: opacity 250ms ease-in;
+}
