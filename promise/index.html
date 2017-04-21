@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>promise</title>
+	<meta charset="utf-8">
+</head>
+<body>
+<script type="text/javascript">
+	var promiseTest = new Promise(function(resolve,reject){
+		setTimeout(function(){
+			resolve(1);
+		},2000)
+	});
+	promiseTest.then(function(result){
+		console.log(result);
+	})
+
+	function allFunc1(){
+		return new Promise(function(resolve,reject){
+			setTimeout(resolve,500,'all1');
+		});
+	}
+	function allFunc2(){
+		return  new Promise(function(resolve,reject){
+			setTimeout(resolve,1000,'all2');
+		});
+	}
+	Promise.all([allFunc1(),allFunc2()]).then(function(result){
+		console.log(result);
+	})
+
+	function raceFunc1(){
+		return new Promise(function(resolve,reject){
+			setTimeout(resolve,1500,'race1');
+		});
+	}
+	function raceFunc2(){
+		return  new Promise(function(resolve,reject){
+			setTimeout(resolve,1000,'race2');
+		});
+	}
+	Promise.race([raceFunc1(),raceFunc2()]).then(function(result){
+		console.log(result);
+	})
+
+</script>
+</body>
+</html>
