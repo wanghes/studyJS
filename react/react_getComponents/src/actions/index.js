@@ -1,11 +1,25 @@
-
-export const SET_STATE = 'SET_STATE'
-export const RECORD_STATE = 'RECORD_STATE'
-export const SAVE_PRODUCT_LIST = 'SAVE_PRODUCT_LIST'
-export const NEW_PRODUCT_DATA = 'NEW_PRODUCT_DATA'
-export const DELETE_ITEM = 'DELETE_ITEM'
-export const REQUEST_POSTS = 'REQUEST_POSTS'
-export const RECEIVE_POSTS = 'RECEIVE_POSTS'
-export const GET_DATA_START = 'GET_DATA_START'
-export const GET_DATA_SUCCESS = 'GET_DATA_SUCCESS'
+export const BOOK_LIST = "BOOK_LIST"
+export const ADD_TODO = 'ADD_TODO'
 export const TEST_DISPATCH = 'TEST_DISPATCH'
+import * as Ajax from '../utils/ajax';
+
+
+function updateBooks(items) {
+  return { type: BOOK_LIST, items };
+}
+
+export const addTodo=(text)=> {
+  return {
+    type: 'ADD_TODO',
+    text
+  }
+}
+
+export const fetchBooks=(url)=> {
+  return dispatch=>{
+     let promise = Ajax.get(url);
+     promise.then(function(result){
+          dispatch(updateBooks(result))
+     })
+  }
+}

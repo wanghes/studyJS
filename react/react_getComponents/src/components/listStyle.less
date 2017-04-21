@@ -1,38 +1,66 @@
-@color:red;
-*{
-  margin:0;
-  border:0;
-  padding:0;
-}
-h2{
-  color:@color;
+@color: white;
+
+:global(*) {
+    margin: 0;
+    border: 0;
+    padding: 0;
 }
 
-ul#header{
-  height:40px;
-  width:100%;
-  line-height: 40px;
-  display: flex;
-  justify-content: center;
-  list-style: none;
-  li{
-    flex:1;
-    text-align: center;
-    a{
-      text-decoration: none;
-      display: block;
-      font-size:20px;
-      color:#fff;
-      background: #000;
-      border-right:1px solid #fff;
+:global(h2) {
+    color: @color;
+    line-height: 40px;
+    background: #333;
+}
+
+:global(ul#header) {
+    height: 40px;
+    position: absolute;
+    top: 0;
+    left: 0;
+    z-index: 1;
+    width: 100%;
+    line-height: 40px;
+    display: flex;
+    justify-content: center;
+    list-style: none;
+
+    li {
+        flex: 1;
+        text-align: center;
+        a {
+            text-decoration: none;
+            display: block;
+            font-size: 20px;
+            color: #fff;
+            background: #000;
+            border-right: 1px solid #333;
+        }
+
+        &:last-child {
+            a {
+                border-right: none;
+            }
+        }
     }
-  }
 }
-.fade-enter {
-  opacity: 0;
-  z-index: 1;
+
+:global(.fade-enter) {
+    opacity: 0;
+    z-index: 1;
 }
-.fade-enter.fade-enter-active {
-  opacity: 1;
-  transition: opacity 250ms ease-in;
+
+:global(.fade-enter.fade-enter-active) {
+    opacity: 1;
+    transition: opacity 250ms ease-in;
+}
+
+.content {
+    position: absolute;
+    left: 0;
+    right: 0;
+    top: 0;
+    bottom: 0;
+    top: 40px;
+    text-align: center;
+    background: blue;
 }
