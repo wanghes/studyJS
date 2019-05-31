@@ -5,17 +5,18 @@
     <meta charset="UTF-8">
     <title>Angularjs</title>
     <style>
-    input[contenteditable]{
-      border:1px solid #ccc;
-      padding:5px;
-    }
-      .error{
-        color:#fff;
-        display: block;
-        padding:5px;
-        border:1px solid #ca4141;
-        background: #ca4141;
-      }
+        input[contenteditable] {
+            border: 1px solid #ccc;
+            padding: 5px;
+        }
+
+        .error {
+            color: #fff;
+            display: block;
+            padding: 5px;
+            border: 1px solid #ca4141;
+            background: #ca4141;
+        }
     </style>
 </head>
 <script src="lib/angular.min.js" type="text/javascript"></script>
@@ -24,39 +25,40 @@
 </style>
 
 <body ng-controller="myCon">
-    <form name="myForm" >
+    <form name="myForm">
         <span class="error" ng-if="myForm.myWidget.$error.required">Required!</span>
         <span class="error" ng-if="myForm.myWidget.$error.email">email 格式不正确!</span>
         <input contenteditable type="text" name="myWidget" ng-model="userContent" required>
         <div>
-          <button type="submit" ng-disabled="myForm.$invalid">提交</button>
+            <button type="submit" ng-disabled="myForm.$invalid">提交</button>
         </div>
     </form>
 </body>
 <script>
-var app = angular.module("app", [])
-    .controller("myCon", ["$scope", function($scope) {
-      // $scope.userContent = "Change@qq.com";
-    }])
-    .directive("contenteditable", function() {
-        return {
-            restrict: 'EA',
-            scope: {},
-            require: '^ngModel',
-            link: function(scope, element, attrs, ngModel) {
-                // 指定UI的更新方式
-                ngModel.$parsers.push(function(value){
-                  var email = /^(\w)+(\.\w+)*@(\w)+((\.\w+)+)$/;
-                  if(!ngModel.$isEmpty(value) && !email.test(value)){
-                    ngModel.$setValidity("email", false);
-                  }else{
-                    ngModel.$setValidity("email", true);
-                  }
-                  return value;
-                });
+    var app = angular.module("app", [])
+        .controller("myCon", ["$scope", function ($scope) {
+            // $scope.userContent = "Change@qq.com";
+        }])
+        .directive("contenteditable", function () {
+            return {
+                restrict: 'EA',
+                scope: {},
+                require: '^ngModel',
+                link: function (scope, element, attrs, ngModel) {
+                    // 指定UI的更新方式
+                    ngModel.$parsers.push(function (value) {
+                        var email = /^(\w)+(\.\w+)*@(\w)+((\.\w+)+)$/;
+                        if (!ngModel.$isEmpty(value) && !email.test(value)) {
+                            ngModel.$setValidity("email", false);
+                        } else {
+                            ngModel.$setValidity("email", true);
+                        }
+                        return value;
+                    });
+                }
             }
-        }
-    })
+        })
+
 </script>
 
 </html>

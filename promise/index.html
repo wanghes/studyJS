@@ -25,6 +25,13 @@
 			setTimeout(resolve,1000,'all2');
 		});
 	}
+    function allFunc3(){
+		return  new Promise(function(resolve,reject){
+			setTimeout(reject,1000,'失败了');
+		});
+	}
+
+    // all 有一个失败就都失败了， 返回第一个失败的错误
 	Promise.all([allFunc1(),allFunc2()]).then(function(result){
 		console.log(result);
 	})

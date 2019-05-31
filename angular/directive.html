@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html ng-app="sanshaApp">
+
+<head>
+    <title></title>
+    <link rel="stylesheet" href="bootstrap/css/bootstrap.css">
+    <script src="lib/angular.min.js" type="text/javascript"></script>
+    <script src="lib/jquery.js" type="text/javascript"></script>
+</head>
+
+<body>
+    <div class="container">
+        <customer-form></customer-form>
+    </div>
+</body>
+<script type="text/javascript">
+    angular.module('sanshaApp', [])
+        .directive('newDirective', function ($compile) {
+            return {
+                restrict: 'E',
+                scope: {
+                    random: "@",
+                    item: "="
+                },
+                template: '<ul>' +
+                    '<li>' +
+                    '<h3>{{item.name}}</h3>'+
+                    '<div><input type="text" ng-model="item.name" /></div>' + 
+                    '<div><input type="text" ng-model="item.text" /></div>' + 
+                    '<button class="btn btn-primary" ng-click="remove()">Remove</button>' +
+                    '</li>' +
+                    '</ul>',
+                controller: function ($scope) {
+                    $scope.text = "12";
+                    
+                },
+                link: function (scope, element, attributes) {
+                    scope.remove = function () {
+                        element.remove();
+                    }
+                }
+            }
+        })
+        .directive('customerForm', function ($compile) {
+            return {
+                scope: {
+                },
+                restrict: 'E',
+                transclude: true,
+                templateUrl: "./custom_view.html",
+                controller: "mainCtrl",
+                link: function (scope, element, attrs, mainCtrl) {
+                    scope.getData = function () {
+                        scope.list.push({
+                            name: Math.ceil(Math.random()*10000),
+                            text: ""
+                        });
+                        let len = scope.list.length;
+                        var ran = "val_"+Math.ceil(Math.random()*10000);
+                        scope[ran] = scope.list[len-1];
+
+                        $newDirective = angular.element('<new-directive item="'+ran+'" random="'+Math.random()+'">');
+                        $(element[0]).find('.wrap').append($newDirective);
+                        // compile html DOM
+                        $compile($newDirective)(scope);
+                    }
+                }
+            }
+        })
+        .controller("mainCtrl", ['$scope', function ($scope) {
+            $scope.list = [];
+            $scope.saveData = function() {
+                console.log($scope.list);
+            };
+        }])
+
+</script>
+
+</html>
