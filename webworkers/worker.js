@@ -9,7 +9,9 @@ function timedCount() {
     //将得到的sum发送回主线程
     postMessage({ num: sum });
 };
-console.log(new XMLHttpRequest())
+// console.log(new XMLHttpRequest())
+// 所以可以ajax操作
+
 onmessage = function(event) {
     //向主线程发送event.data.name信息
     postMessage(event.data.name);

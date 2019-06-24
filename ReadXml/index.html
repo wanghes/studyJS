@@ -1,166 +1,228 @@
 <!DOCTYPE html>
 <html>
+
 <head>
     <title>xml</title>
     <meta charset="utf-8">
     <style type="text/css">
-        *{
-            padding:0; margin:0; border:0;
+        * {
+            padding: 0;
+            margin: 0;
+            border: 0;
         }
-        table{
+
+        table {
             border-collapse: collapse;
         }
-        table tr td,table tr th{
+
+        table tr td,
+        table tr th {
             padding: 10px;
-            border:1px solid #bbb;
+            border: 1px solid #bbb;
         }
-        table tr:nth-of-type(odd){
+
+        table tr:nth-of-type(odd) {
             background: #ccc;
         }
 
-        table tr:nth-of-type(even){
+        table tr:nth-of-type(even) {
             background: #f5f5f5;
         }
-        table tr:hover{
-            color:#fff;
+
+        table tr:hover {
+            color: #fff;
             background: #333;
-            cursor:pointer;
+            cursor: pointer;
         }
 
-        table thead tr:first-child{
+        table thead tr:first-child {
             background: #000000;
-            color:#fff;
+            color: #fff;
         }
+
     </style>
 </head>
-<body>
 
-<table>
-    <thead><tr><th>公司名</th><th>IP地址</th></tr></thead>
-    <tbody id="List"></tbody>
-</table>
+<body>
+    <table>
+        <thead>
+            <tr>
+                <th>公司名</th>
+                <th>IP地址</th>
+            </tr>
+        </thead>
+        <tbody id="List"></tbody>
+    </table>
+    <br>
+    <table>
+            <thead>
+                <tr>
+                    <th>时间</th>
+                    <th>景色</th>
+                    <th>地址</th>
+                    <th>url</th>
+                </tr>
+            </thead>
+            <tbody id="List2"></tbody>
+        </table>
 </body>
+
 </html>
 <script type="text/javascript">
-
     /**
-     * 需要读取的xml文件
-     * */
-    var uRl = "jsReadXml.xml";
-    var xmlDoc;
-     /**
      * 初始化，给上述定义变量赋值
      * */
-    function showcurcity(){
-        if(window.ActiveXObject)
-        {
-            xmlDoc=new ActiveXObject("Microsoft.XMLDOM");
-            xmlDoc.async="false";
+    function showcurcity() {
+        var uRl = "./jsReadXml.xml";
+        var isFirefox = navigator.userAgent.indexOf("Firefox");
+        var xmlDoc;
+        if (window.ActiveXObject) {
+            xmlDoc = new ActiveXObject("Microsoft.XMLDOM");
+            xmlDoc.async = "false";
             xmlDoc.load(uRl);
-            getvalue();
-        }else if(document.implementation && document.implementation.createDocument){
-            xmlDoc=document.implementation.createDocument("", "root", null);
+            getvalue(xmlDoc);
+        } else if (isFirefox > 0 && document.implementation && document.implementation.createDocument) {
+            xmlDoc = document.implementation.createDocument("", "", null);
             xmlDoc.async = false;
             xmlDoc.load(uRl);
-            xmlDoc.onload = getvalueff;
-        }else {
-            return null;
+            getvalueff(xmlDoc);
+            /*
+            xmlDoc.onload = function(){
+                console.log(xmlDoc);
+                getvalueff(xmlDoc);
+            };
+            */
+        } else {
+            xmlDoc = new XMLHttpRequest();
+            //IE9 和 IE10 不支持 xmlhttp.overrideMimeType
+            if (xmlDoc.overrideMimeType) { 
+                xmlDoc.overrideMimeType("text/xml");
+            }
+            xmlDoc.open("GET", uRl, false);
+            xmlDoc.send(null);
+            if (xmlDoc.readyState == 4 && xmlDoc.status == 200) {
+                let result = xmlDoc.responseXML;
+                getvalueff(result);
+            }
         }
     }
-    function getvalue()
-    {
-        var nodes=xmlDoc.documentElement.childNodes;
+
+    function getvalue(xmlDoc) {
+        var nodes = xmlDoc.documentElement.childNodes;
         var now = new Date();
-        for(i=0;i<nodes.length;i++){
-            var value=nodes.item(i).childNodes.item(0).text ;
-            alert(nodes.item(i).childNodes.item(1).text);
-            alert(nodes.item(i).childNodes.item(2).text);
+        for (i = 0; i < nodes.length; i++) {
+            var value = nodes.item(i).childNodes.item(0).text;
+            console.log(value);
+            console.log(nodes.item(i).childNodes.item(1).text);
+            console.log(nodes.item(i).childNodes.item(2).text);
         }
     }
-    function getvalueff(){
-        var cCode=xmlDoc.getElementsByTagName("date");
+
+    function getvalueff(xmlDoc) {
+        var cCode = xmlDoc.getElementsByTagName("date");
         var now = new Date();
-        var nowvalue=now.getFullYear()+'年'+(now.getMonth()+1)+'月'+now.getDate()+'日';
-        for(var i=0;i<cCode.length;i++)
-        {
-            alert(xmlDoc.getElementsByTagName("imgsrc")[i].childNodes[0].nodeValue);
-            alert(xmlDoc.getElementsByTagName("title")[i].childNodes[0].nodeValue);
-            alert(xmlDoc.getElementsByTagName("url")[i].childNodes[0].nodeValue);
+        var nowvalue = now.getFullYear() + '年' + (now.getMonth() + 1) + '月' + now.getDate() + '日';
+        for (var i = 0; i < cCode.length; i++) {
+            cCode[i].append(nowvalue);
+            console.log(cCode[i].childNodes[0].nodeValue);
+            console.log(xmlDoc.getElementsByTagName("imgsrc")[i].childNodes[0].nodeValue);
+            console.log(xmlDoc.getElementsByTagName("title")[i].childNodes[0].nodeValue);
+            console.log(xmlDoc.getElementsByTagName("url")[i].childNodes[0].nodeValue);
         }
+
+        showTables(cCode.length, xmlDoc);
     }
+
+    function showTables(len, xmlDoc) {
+        var list = document.getElementById('List2');
+        var str = '';
+        for (var i = 0; i < len; i++) {
+            let date = xmlDoc.getElementsByTagName("date")[i].childNodes[0].nodeValue
+            let imgsrc = xmlDoc.getElementsByTagName("imgsrc")[i].childNodes[0].nodeValue
+            let title = xmlDoc.getElementsByTagName("title")[i].childNodes[0].nodeValue
+            let url = xmlDoc.getElementsByTagName("url")[i].childNodes[0].nodeValue
+            str += "<tr><td>" + date + '</td><td><img width="100" src="' + imgsrc + '"/></td><td>' + title + '</td><td>' + url + '</td></tr>';
+        }
+        list.innerHTML = str;
+    }
+
+    showcurcity();
+
 
     /**
      * DOMParser 对象解析 XML 文本并返回一个 XML Document 对象。
      * 要使用 DOMParser，使用不带参数的构造函数来实例化它，然后调用其 parseFromString() 方法
      * parseFromString(text, contentType) 参数text:要解析的 XML 标记 参数contentType文本的内容类型
      * 可能是 "text/xml" 、"application/xml" 或 "application/xhtml+xml" 中的一个。注意，不支持 "text/html"。
+     * 
      * 将xml字符串变为xml对象
      */
-    function toXMLObject(xmlString){
+    function toXMLObject(xmlString) {
         var xmlDoc;
-        try{
+        try {
             xmlDoc = new ActiveXObject('Microsoft.XMLDOM');
             xmlDoc.loadXML(xmlString);
-            console.log(xmlDoc);
-        }
-        catch(e){
+        } catch (e) {
             var oParser = new DOMParser();
-            xmlDoc= oParser.parseFromString(xmlString,"text/xml");
+            xmlDoc = oParser.parseFromString(xmlString, "text/xml");
         }
 
         return xmlDoc;
     }
-    var xmlString = "<?xml version='1.0' encoding='UTF-8' ?><node1><node1_1>1400</node1_1><node1_2 id='n1_2'>Default.html</node1_2></node1>";
+    var xmlString = `<?xml version='1.0' encoding='UTF-8' ?><node1><node1_1>1400</node1_1><node1_2 id='n1_2'>Default.html</node1_2></node1>`;
+                    
     var xmlObj = toXMLObject(xmlString);
+    // console.log(xmlObj.childNodes[0].tagName);
+    // console.log(xmlObj.childNodes[0].childNodes[0].childNodes[0].nodeValue);
+    // console.log(xmlObj.childNodes[0].firstChild.firstChild.nodeValue);
 
-    //console.log(xmlObj.childNodes[0].firstChild.firstChild.nodeValue);
     /**
      * 将xml对象变为字符串
      * */
-    function getXmlString(xmlObj){
-
+    function getXmlString(xmlObj) {
         if (window.ActiveXObject || navigator.plugins) { //IE11包括（11）不支持window.ActiveObject
-            return xmlObj.xml;  //IE 10,9,8,7,6,5 会通过这里
-        } else{
-            return new XMLSerializer().serializeToString(xmlObj);  //FF chrome opera safari
+            return xmlObj.xml; //IE 10,9,8,7,6,5 会通过这里
+        } else {
+            return new XMLSerializer().serializeToString(xmlObj); //FF chrome opera safari
         }
     }
     var getResultXmlString = getXmlString(xmlObj);
-    console.log(getResultXmlString);
+    // console.log(getResultXmlString);
 
     /**
      * 将xml文件转化为xml对象
      *  @param {String} xmlFile xml文件
      *  @return {Object} xml对象
      * */
-    var loadXML = function(xmlFile){
+    var loadXML = function (xmlFile) {
         var xmlDoc = null;
         var isFirefox = navigator.userAgent.indexOf("Firefox");
         //判断浏览器的类型
-        if(!window.DOMParser && window.ActiveXObject){   //支持IE浏览器 window.DOMParser 判断是否是非ie浏览器
-            try{
+        if (!window.DOMParser && window.ActiveXObject) { //支持IE浏览器 window.DOMParser 判断是否是非ie浏览器
+            try {
                 xmlDoc = new ActiveXObject('Microsoft.XMLDOM');
                 xmlDoc.async = false;
                 xmlDoc.load(xmlFile); //loadXML方法载入xml字符串
-            }catch(e){
+            } catch (e) {
                 console.log(e);
             }
-        }else if(isFirefox > 0 ){ //支持Mozilla浏览器 (window.DOMParser && document.implementation && document.implementation.createDocument)
-            try{
+        } else if (isFirefox > 0) { 
+            //支持Mozilla浏览器 (window.DOMParser && document.implementation && document.implementation.createDocument)
+            try {
                 xmlDoc = document.implementation.createDocument('', '', null);
                 xmlDoc.async = false;
                 xmlDoc.load(xmlFile);
-            }catch(e){
+            } catch (e) {
                 console.log(e);
             }
-        }else{
+        } else {
             var xmlhttp = new XMLHttpRequest();
-            if(xmlhttp.overrideMimeType){  //IE9 和 IE10 不支持 xmlhttp.overrideMimeType
+            if (xmlhttp.overrideMimeType) { //IE9 和 IE10 不支持 xmlhttp.overrideMimeType
                 xmlhttp.overrideMimeType("text/xml");
             }
-            xmlhttp.open("GET",xmlFile,false);
+            xmlhttp.open("GET", xmlFile, false);
             xmlhttp.send(null);
-            if(xmlhttp.readyState == 4 && xmlhttp.status==200){
+            if (xmlhttp.readyState == 4 && xmlhttp.status == 200) {
                 xmlDoc = xmlhttp.responseXML;
             }
         }
@@ -168,7 +230,7 @@
         return xmlDoc;
     };
 
-    function checkXMLDocObj(xmlFile,url) {
+    function checkXMLDocObj(xmlFile, url) {
         var xmlDoc = loadXML(xmlFile);
         if (xmlDoc == null) {
             alert('您的浏览器不支持xml文件读取,于是本页面禁止您的操作,推荐使用IE5.0以上可以解决此问题!');
@@ -177,15 +239,15 @@
         return xmlDoc;
     }
 
-    window.onload = function(){
-        var xmlDoc = checkXMLDocObj('test.xml','error.html');
+    window.onload = function () {
+        var xmlDoc = checkXMLDocObj('test.xml', 'error.html');
         var elements = xmlDoc.getElementsByTagName("Company");
         var list = document.getElementById('List');
         var str = '';
         for (var i = 0; i < elements.length; i++) {
             var name = elements[i].getElementsByTagName("cNname")[0].firstChild.nodeValue;
             var ip = elements[i].getElementsByTagName("cIP")[0].firstChild.nodeValue;
-            str += "<tr><td>"+name+'</td><td>'+ip+'</td></tr>';
+            str += "<tr><td>" + name + '</td><td>' + ip + '</td></tr>';
         }
         list.innerHTML = str;
     }

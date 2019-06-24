@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html>
+
 <head>
     <title>zepto-Slider</title>
     <meta charset="utf-8">
@@ -14,43 +15,57 @@
             transition: all .3s linear;
             -webkit-transform: translateZ(0);
         }
+
         #tour img {
             max-width: 500%;
         }
+
     </style>
 </head>
+
 <body>
-<!DOCTYPE HTML>
-<html lang="en-US">
-<head>
-    <meta charset="UTF-8">
-    <title>Zepto Demo</title>
-</head>
-<body>
-<div id=tour>
-    <img src="data:image/gif;base64,R0lGODlhAQABAAD/ACwAAAAAAQABAAACADs=">
-</div>
-<script type="text/javascript" src="zepto.js"></script>
-<script type="text/javascript" src="touch.js"></script>
-<script type="text/javascript" src="fx.js"></script>
-<script type="text/javascript">
+    <!DOCTYPE HTML>
+    <html lang="en-US">
 
-    $('#tour > img')[0].src =('devicePixelRatio' in window && devicePixelRatio > 1) ? 'images/intro2x.jpg' : 'images/intro.jpg';
+    <head>
+        <meta charset="UTF-8">
+        <title>Zepto Demo</title>
+    </head>
 
-    var tour = $('#tour'), tourSlides = tour.children(),tourSlide = 0, tourSlidesTotal = 5;
-    function advanceTourSlide(delta) {
-        tourSlide = (tourSlide + delta + tourSlidesTotal) % tourSlidesTotal;
-        var offset = tourSlide * tour.width();
-        tourSlides.animate({ translateX:-offset + 'px' });
-    }
+    <body>
+        <div id="tour">
+            <img src="data:image/gif;base64,R0lGODlhAQABAAD/ACwAAAAAAQABAAACADs=" />
+        </div>
+        <script type="text/javascript" src="zepto.js"></script>
+        <script type="text/javascript" src="touch.js"></script>
+        <script type="text/javascript" src="fx.js"></script>
+        <script type="text/javascript">
+            $('#tour > img')[0].src = ('devicePixelRatio' in window && devicePixelRatio > 1) ? 'images/intro2x.jpg' :
+                'images/intro.jpg';
 
-    tour.on('click swipeLeft', function () {
-        advanceTourSlide(+1)
-    }).on('swipeRight', function () {
-        advanceTourSlide(-1)
-    });
-</script>
+            var tour = $('#tour'),
+                tourSlides = tour.children(),
+                tourSlide = 0,
+                tourSlidesTotal = 5;
+
+            function advanceTourSlide(delta) {
+                tourSlide = (tourSlide + delta + tourSlidesTotal) % tourSlidesTotal;
+                var offset = tourSlide * tour.width();
+                tourSlides.animate({
+                    translateX: -offset + 'px'
+                });
+            }
+
+            tour.on('click swipeLeft', function () {
+                advanceTourSlide(+1)
+            }).on('swipeRight', function () {
+                advanceTourSlide(-1)
+            });
+
+        </script>
+    </body>
+
+    </html>
 </body>
-</html>
-</body>
+
 </html>

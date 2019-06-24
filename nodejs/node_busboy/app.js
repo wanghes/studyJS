@@ -6,7 +6,6 @@ var path = require('path'),
 var app = express();
 app.use(express.static(__dirname));
 app.use(busboy({
-
     limit: {
         fileSize: 10 * 1024 * 1024 // 10MB
     }

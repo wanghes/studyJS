@@ -24,4 +24,8 @@
         <cNname>蚂蚁金服</cNname>
         <cIP>127.0.0.1</cIP>
 	</Company>
+    <Company>
+        <cNname>货拉拉</cNname>
+        <cIP>127.0.0.1</cIP>
+	</Company>
 </DongFang>
