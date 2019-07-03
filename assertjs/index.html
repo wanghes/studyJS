@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+    <style>
+        #results li.pass{ color: green; }
+        #results li.fail{ color: red; }
+    </style>
+</head>
+<body>
+    <ul id="results"></ul>
+</body>
+<script src="assert.js"></script>
+<script src="asyncAssert.js"></script>
+<script>
+    window.onload = function() {
+        test('A test', function() {
+            assert(true, "First assertion completed");
+            assert(true, "Second assertion completed");
+            assert(true, "Third assertion completed");
+        });
+        test('Another test', function() {
+            assert(true, "First test completed");
+            assert(false, "Second test fail");
+            assert(true, "Third assertion completed");
+        });
+        test('A third test', function() {
+            assert(null, "fail");
+            assert(5, "success");
+        });
+
+        asyncTest('A asyncTest', function(){
+            pause();
+            setTimeout(function() {
+                asyncAssert(true, "success asyncTest");
+                resume();
+            }, 1000);
+        });
+
+        test('test object', function() {
+            var obj = {};
+            var fn  = function(){};
+            assert(obj && fn, "both the Object and function exsit");
+        });
+
+       
+    };
+</script>
+</html>
